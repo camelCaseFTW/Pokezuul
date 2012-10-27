@@ -4,21 +4,26 @@
  * 
  * @author Alok Swamy
  */
-public class Item
-{
+public class Item {
+	
+	private static final String default_description = "An ordinary item";
+	
     protected String itemName;
     protected String itemDescription;
     // Item weight was temporarily removed because it has no use currently in the game
     //protected int itemWeight;
 
+    public Item(String name, String description){
+    	itemName = name;
+    	itemDescription = description;
+    }
+    
     public Item(String name) {
-        itemName = name;
-        itemDescription = "An ordinary item";
-        //itemWeight = 0;
+        this(name, default_description);
     }
     
     public Item() {
-        this("");
+        this("", default_description);
     }
 
     public String getName() {
