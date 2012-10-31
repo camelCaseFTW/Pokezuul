@@ -128,14 +128,14 @@ public class Game {
         
         CommandTypes commandWord = command.getCommandWord();
         //This system must be changed later to seperate the commands sent to game and commands sent to players
-        if (commandWord == commandWord.UNKNOWN) {
+        if (commandWord == CommandTypes.UNKNOWN) {
             System.out.println("I don't know what you mean...");
             return false;            
-        } else if (commandWord == commandWord.HELP) {
+        } else if (commandWord == CommandTypes.HELP) {
             printHelp();
-        } else if (commandWord == commandWord.QUIT) {
+        } else if (commandWord == CommandTypes.QUIT) {
             wantToQuit = quit(command);
-        } else if (commandWord == commandWord.GO) {
+        } else if (commandWord == CommandTypes.GO) {
             goRoom(command);
         } else {
             p1.processCommand(command);

@@ -232,22 +232,22 @@ public class Player extends Creature{
     
     public void processCommand(Command command) {
          CommandTypes commandWord = command.getCommandWord();
-        //This system must be changed later to seperate the commands sent to game and commands sent to players
-        if (commandWord == commandWord.LOOK) {
+        //This system must be changed later to separate the commands sent to game and commands sent to players
+        if (commandWord == CommandTypes.LOOK) {
             look();
-        } else if (commandWord == commandWord.PICKUP) {
+        } else if (commandWord == CommandTypes.PICKUP) {
             pickUpItem(command);
-        } else if (commandWord == commandWord.INVENTORY) { 
+        } else if (commandWord == CommandTypes.INVENTORY) { 
             dspInventory();
-        } else if (commandWord == commandWord.USE) { 
+        } else if (commandWord == CommandTypes.USE) { 
             useItem(command);
-        } else if (commandWord == commandWord.STATUS) {
+        } else if (commandWord == CommandTypes.STATUS) {
             dspStatus();
-        } else if (commandWord == commandWord.EQUIP) {
+        } else if (commandWord == CommandTypes.EQUIP) {
             equipItem(command);
-        } else if (commandWord == commandWord.DEEQUIP) {
+        } else if (commandWord == CommandTypes.DEEQUIP) {
             deequipItem();
-        } else if (commandWord == commandWord.EXAMINE) {
+        } else if (commandWord == CommandTypes.EXAMINE) {
             examineItem(command);
         }
     }
