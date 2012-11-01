@@ -8,6 +8,7 @@ class GameView extends JFrame {
 	
 	private static final String newline = "\n";
 	
+	private JMenuBar menuBar = new JMenuBar();
 	
 	private JMenu gameMenu = new JMenu("Game");
 	private JMenuItem newGame = new JMenuItem("New Game");
@@ -37,7 +38,26 @@ class GameView extends JFrame {
 	public GameView() {
 		//game_model = game;
 
+		gameMenu.add(newGame);
+		gameMenu.add(saveGame);
+		saveGame.setEnabled(false);
+		gameMenu.add(openGame);
+		gameMenu.add(quitGame);
+		
+		editMenu.add(undoGame);
+		undoGame.setEnabled(false);
+		editMenu.add(redoGame);
+		redoGame.setEnabled(false);
+		
+		helpMenu.add(helpGame);
+		
+		menuBar.add(gameMenu);
+		menuBar.add(editMenu);
+		menuBar.add(helpMenu);
+		
 		mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
 		picturePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		commandPanel = new JPanel();
 		
@@ -49,24 +69,32 @@ class GameView extends JFrame {
 		
 		commandPanel.add(new JLabel("Command:"));
 		commandPanel.add(commandInput);
+		commandInput.setEditable(false);
 		commandPanel.add(commandButton);
+		commandButton.setEnabled(false);
 		
 		picturePanel.add(new JLabel("MOO"));
 		
 		mainPanel.add(picturePanel);
-		mainPanel.add(messageDisplayer);
+		mainPanel.add(scrollPane);
 		mainPanel.add(commandPanel);
 		
 		this.setLayout(new FlowLayout());
+		this.setJMenuBar(menuBar);
 		this.setContentPane(mainPanel);
 		this.pack();
 		this.setTitle("Zuul");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		dspMessage("Game > New Game to begin your adventure!");
 	}
 
 	public String getUserInput() {
 		return commandInput.getText();
+	}
+	
+	public void enableCommandPanel() {
+		commandInput.setEditable(true);
+		commandButton.setEnabled(true);
 	}
 	
 	public void resetUserInput() {
@@ -82,6 +110,14 @@ class GameView extends JFrame {
 		commandInput.addActionListener(listener);
 	}
 	
+	public void addNewGameListener(ActionListener listener) {
+		newGame.addActionListener(listener);
+	}
+	
+	public void addQuitGameListener(ActionListener listener) {
+		quitGame.addActionListener(listener);
+	}
+	
 	public void dspMessage(String message) {
         messageDisplayer.append(message + newline);
         messageDisplayer.setCaretPosition(messageDisplayer.getDocument().getLength());		
@@ -92,9 +128,6 @@ class GameView extends JFrame {
 		GameController c = new GameController(v);
 		
 		v.setVisible(true);
-		for(int i = 0; i < 3; i++)
-			v.dspMessage("WASSAP");
-		System.out.println("HI");
 	}
 
 }

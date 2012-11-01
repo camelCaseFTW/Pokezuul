@@ -26,6 +26,7 @@
  */
 
 public class Game {
+	private boolean gameOver;
     private Parser parser;
     private BattleParser bParser;
     private Player p1;
@@ -37,13 +38,13 @@ public class Game {
         parser = new Parser();
         bParser = new BattleParser();
         p1 = new Player();
-        createRooms();
+        gameOver = false;
     }
 
     /**
      * Create all the rooms and link their exits together.
      */
-    private void createRooms() {
+    public void createRooms() {
         Room outside, theater, pub, lab, office;
       
         // create the rooms
@@ -117,6 +118,14 @@ public class Game {
         System.out.println("Type '" + CommandTypes.HELP + "' if you need help.");
         System.out.println();
     }
+    
+    public String dspWelcome() {
+    	String s = "";
+    	s += "Welcome to the World of PokeZuul!"
+    			+ "\nPrepare for a kick-butt adventure that will block your socks off!"
+    			+ "\nType '" + CommandTypes.HELP + "' if you need help.\n";	
+    	return s;
+    }
 
     /**
      * Given a command, process (that is: execute) the command.
@@ -186,5 +195,9 @@ public class Game {
         } else {
             return true;  // signal that we want to quit
         }
+    }
+    
+    public boolean isGameOver() {
+    	return gameOver;
     }
 }

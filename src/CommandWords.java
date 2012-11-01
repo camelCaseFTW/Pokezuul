@@ -65,4 +65,10 @@ public class CommandWords
             System.out.print(command + "  ");
         System.out.println();
     }
+    
+    public String dspAllCommands() {
+    	String s = "";
+    	for(String command : validCommands.keySet()) s+= command + " ";
+    	return s;
+    }
 }
