@@ -37,7 +37,7 @@ class GameView extends JFrame {
 	public GameView() {
 		//game_model = game;
 
-		mainPanel = new JPanel(new GridLayout(3,1));
+		mainPanel = new JPanel();
 		picturePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		commandPanel = new JPanel();
 		
@@ -45,6 +45,7 @@ class GameView extends JFrame {
 		messageDisplayer.setEditable(false);
 		messageDisplayer.setBorder(BorderFactory.createEtchedBorder());
 		scrollPane = new JScrollPane(messageDisplayer);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		commandPanel.add(new JLabel("Command:"));
 		commandPanel.add(commandInput);
@@ -56,6 +57,7 @@ class GameView extends JFrame {
 		mainPanel.add(messageDisplayer);
 		mainPanel.add(commandPanel);
 		
+		this.setLayout(new FlowLayout());
 		this.setContentPane(mainPanel);
 		this.pack();
 		this.setTitle("Zuul");
@@ -66,9 +68,18 @@ class GameView extends JFrame {
 	public String getUserInput() {
 		return commandInput.getText();
 	}
+	
+	public void resetUserInput() {
+		commandInput.setText("");
+	}
 
+	void showError(String errMessage) {
+		JOptionPane.showMessageDialog(this, errMessage);
+	}
+	
 	public void addCommandListener(ActionListener listener) {
 		commandButton.addActionListener(listener);
+		commandInput.addActionListener(listener);
 	}
 	
 	public void dspMessage(String message) {
@@ -77,10 +88,12 @@ class GameView extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		GameView g = new GameView();
-		g.setVisible(true);
-		for(int i = 0; i < 10; i++)
-		g.dspMessage("WASSAP");
+		GameView v = new GameView();
+		GameController c = new GameController(v);
+		
+		v.setVisible(true);
+		for(int i = 0; i < 3; i++)
+			v.dspMessage("WASSAP");
 		System.out.println("HI");
 	}
 
