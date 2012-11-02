@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * This class is part of the "World of Zuul" application. 
@@ -60,11 +61,38 @@ public class Parser {
         return new Command(commands.getCommandWord(word1), word2);
     }
     
+    public Command getUserCommand(String s) {
+        String inputLine;   // will hold the full input line
+        String word1 = null;
+        String word2 = null;
+
+        System.out.print("> ");     // print prompt
+
+        inputLine = s;
+
+        // Find up to two words on the line.
+        StringTokenizer tokenizer = new StringTokenizer(s);
+        
+        if(tokenizer.hasMoreTokens()) {
+            word1 = tokenizer.nextToken();      // get first word
+            if(tokenizer.hasMoreTokens()) {
+                word2 = tokenizer.nextToken();      // get second word
+                // note: we just ignore the rest of the input line.
+            }
+        }
+
+        return new Command(commands.getCommandWord(word1), word2);
+    }
+    
     /**
      * Show all commands. This is only here to allow Game to know all about the CommandWords
      * but it can find out about them through the Parser
      */
     public void dspAllCommands() {
         commands.showAll();
+    }
+    
+    public String showAllCommands() {
+    	return commands.dspAllCommands();
     }
 }

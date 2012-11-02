@@ -26,6 +26,9 @@
  */
 
 public class Game {
+	
+	private static final String GAME_END = "Game Over! 'Game > New Game' to start a new game.";
+	
 	private boolean gameOver;
     private Parser parser;
     private BattleParser bParser;
@@ -38,7 +41,7 @@ public class Game {
         parser = new Parser();
         bParser = new BattleParser();
         p1 = new Player();
-        gameOver = false;
+        gameOver = true;
     }
 
     /**
@@ -72,6 +75,36 @@ public class Game {
         lab.insertItem(new Consumable("SmallPotion", 100));
         
         p1.setRoom(outside);
+    }
+    
+    public void initializeGame() {
+        Room outside, theater, pub, lab, office;
+        
+        // create the rooms
+        outside = new Room("outside the main entrance of the university");
+        theater = new Room("in a lecture theater");
+        theater.spawnMonster(new Monster("Vampire"));
+        theater.getMonster().insertItem(new Weapon("SuperSword", 3));
+        pub = new Room("in the campus pub");
+        lab = new Room("in a computing lab");
+        office = new Room("in the computing admin office");
+        
+        // initialise room exits
+
+        outside.setExits("east", theater);
+        outside.setExits("south", lab);
+        outside.setExits("west", pub);
+        theater.setExits("west", outside);
+        pub.setExits("east", outside);
+        lab.setExits("north", outside);
+        lab.setExits("east", office);
+        office.setExits("west", lab);
+
+        outside.insertItem(new Item("GoldenKey"));
+        pub.insertItem(new Weapon("Sword", 2));
+        lab.insertItem(new Consumable("SmallPotion", 100));
+        
+        p1.setRoom(outside);    	
     }
 
     /**
@@ -108,6 +141,18 @@ public class Game {
         System.out.println("Game Over. Thanks for playing!");
     }
 
+    public String playGame(String userInput) {
+    	String gameStatus = "";
+    	Command command = parser.getUserCommand(userInput);
+    	gameStatus += processGameCmd(command);
+    	if (gameOver) return GAME_END;
+    	if (p1.isDead()) {
+    		gameStatus += "You have died :(\n" + GAME_END;
+    		gameOver = true;
+    	}
+    	return gameStatus;
+    }
+    
     /**
      * Print out the opening message for the player.
      */
@@ -153,6 +198,25 @@ public class Game {
         return wantToQuit;
     }
     
+    private String processGameCmd(Command command) {
+    	CommandTypes commandWord = command.getCommandWord();
+    	String s = "";
+    	
+        if (commandWord == CommandTypes.UNKNOWN) {
+            return "I don't know what you mean...";
+        } else if (commandWord == CommandTypes.HELP) {
+            return dspHelp();
+        } else if (commandWord == CommandTypes.QUIT) {
+            gameOver = true;
+        	return "You have quit the game";
+        } else {
+            p1.processCommand(command);
+        }
+        return s;
+    }
+    
+    
+    
     // implementations of user commands:
 
     /**
@@ -166,6 +230,15 @@ public class Game {
         p1.look();
         System.out.println("Your command words are:");
         parser.dspAllCommands();
+    }
+    
+    public String dspHelp() {
+    	String s = "";
+    	s += "You are lost. You are alone. You wander around at the university.\n"
+    			+ p1.playerLook()
+    			+ "Your command words are:\n"
+    			+ parser.showAllCommands();
+    	return s;
     }
     
     /** 

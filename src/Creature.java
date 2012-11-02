@@ -41,4 +41,12 @@ public abstract class Creature extends ItemHolder {
         dspHP();
         System.out.println(name + "'s attack power is " + attackPower);
     }
+    
+    public String creatureHP() {
+    	return name + "'s current HP is " + currentHP + "/" + maxHP;
+    }
+    
+    public String creatureStatus() {
+    	return creatureHP() + "\n" + name + "'s attack power is " + attackPower;
+    }
 }
