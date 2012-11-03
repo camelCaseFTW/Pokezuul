@@ -27,7 +27,7 @@
 
 public class Game {
 	
-	private static final String GAME_END = "Game Over! 'Game > New Game' to start a new game.";
+	public static final String GAME_END = "Game Over! 'Game > New Game' to start a new game.";
 	
 	private boolean gameOver;
     private Parser parser;
@@ -116,13 +116,17 @@ public class Game {
     
     public String playGame(String userInput) {
     	String gameStatus = "";
-    	Command command = parser.getUserCommand(userInput);
-    	gameStatus += processGameCmd(command);
-    	if (gameOver) return GAME_END;
-    	if (p1.isDead()) {
-    		gameStatus += "You have died :(\n" + GAME_END;
-    		gameOver = true;
+    	if (!(p1.inBattle())) {
+    		Command command = parser.getUserCommand(userInput);
+    		gameStatus += processGameCmd(command);
+    	} else {
+    		Combat combat = new Combat(p1, p1.getRoom().getMonster());
+    		
     	}
+		if (p1.isDead()) {
+			gameStatus += "You have died :(\n" + GAME_END;
+			gameOver = true;
+		}
     	return gameStatus;
     }
     

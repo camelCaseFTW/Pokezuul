@@ -33,7 +33,7 @@ class GameView extends JFrame {
 	private JTextArea messageDisplayer;
 	private JScrollPane scrollPane;
 	
-	private Game game_model;
+	private GameSystem game_model;
 
 	public GameView() {
 		//game_model = game;
@@ -125,7 +125,7 @@ class GameView extends JFrame {
 
 	public static void main(String[] args) {
 		GameView v = new GameView();
-		Game g = new Game();
+		GameSystem g = new GameSystem();
 		GameController c = new GameController(v, g);
 		
 		v.setVisible(true);

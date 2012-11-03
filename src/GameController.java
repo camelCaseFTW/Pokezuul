@@ -2,10 +2,10 @@ import java.awt.event.*;
 
 public class GameController {
 	
-	protected Game model;
+	protected GameSystem model;
 	protected GameView view;
 	
-	GameController(GameView v, Game g) {
+	GameController(GameView v, GameSystem g) {
 		model = g;
 		view = v;
 			
@@ -19,7 +19,7 @@ public class GameController {
 			String status = "";
 			try {
 				if (!(userInput.length()>0)) throw new NullPointerException();
-				status = model.playGame(userInput);
+				status = model.processInput(userInput);
 				view.dspMessage(dspUserInput(userInput));
 				view.dspMessage(status);
 				view.resetUserInput();
@@ -36,12 +36,10 @@ public class GameController {
 	
 	class NewGameListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			Game newGame = new Game();
-			newGame.initializeGame();
+			model.newGame();
 			
 			view.enableCommandPanel();
 			view.addCommandListener(new CommandListener());
-			model = newGame;
 		}
 	}
 	

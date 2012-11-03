@@ -11,12 +11,11 @@ public class Combat {
         bParser = new BattleParser();
     }
     
-    public void battle() {
-        boolean battleFinished = false;
-        while (! battleFinished) {
-            BattleCommand bCommand = bParser.getCommand();
-            battleFinished = processBattleCommand(bCommand);
-        }
+    public String fight(String userInput) {
+    	String fightStatus = "";
+        BattleCommand bCommand = bParser.getBattleCommand(userInput);
+        fightStatus += processBattleCmd(bCommand);    	
+    	return fightStatus;
     }
     
     /**
@@ -24,56 +23,70 @@ public class Combat {
      * @param command The command to be processed.
      * @return true If the command ends the battle, false otherwise.
      */
-    private boolean processBattleCommand(BattleCommand command) {
-        boolean battleOver = false;
-        Random generator = new Random();
-        
-        BattleCommandTypes commandWord = command.getCommandWord();
-        if (commandWord == commandWord.UNKNOWN) {
-            System.out.println("Use proper battle commands. Type 'help' if you need assistance.");
-            return false;            
-        } else if (commandWord == commandWord.FIGHT) {
-            //System.out.println("** No stable battle class was completed");
-            creatureAttacks(player, monster);
-            if(monster.isDead()) return true;
-            creatureAttacks(monster, player);
-            if(player.isDead()) return true;
-        } else if (commandWord == commandWord.IDLE){
-            System.out.println("You used Splash. It does nothing");
-            creatureAttacks(monster, player);
-            if(player.isDead()) return true;
-            } else if (commandWord == commandWord.FLEE) {
-            int escape = generator.nextInt(3);
-            
-            if(escape==0) {
-                System.out.println("You have fled!");
-                player.goRoom("back");
-                battleOver = true;
-            } else {
-                System.out.println("Your flee attempt was unsuccessful!");
-                creatureAttacks(monster, player);
-                if(player.isDead()) return true;
-            }
-        } else if (commandWord == commandWord.HELP) {
-            printBattleHelp();
+    
+    private String processBattleCmd(BattleCommand command) {
+    	BattleCommandTypes commandWord = command.getCommandWord();
+    	String s = "";
+   
+        if (commandWord == BattleCommandTypes.UNKNOWN) {
+            s += "Use proper battle commands. Type 'help' if you need assistance.";
+        } else if (commandWord == BattleCommandTypes.FIGHT) {
+            s+= creaturesBattle(true, true);
+        } else if (commandWord == BattleCommandTypes.IDLE){
+            s+= "You used Splash. It does nothing";
+            s+= creaturesBattle(false, true);
+        } else if (commandWord == BattleCommandTypes.FLEE) {
+            s+= playerFlees();
+        } else if (commandWord == BattleCommandTypes.HELP) {
+            s+= dspBattleHelp();
         }
-        return battleOver;
+    	return s;
     }
-
-    private void creatureAttacks(Creature attacker, Creature defender) {
+    
+    private String playerFlees() {
+    	String playerFleeStatus = "";
         Random generator = new Random();
+    	int escape = generator.nextInt(3);
+        
+        if(escape==0) {
+            playerFleeStatus += "You have fled!";
+            player.goRoom("back");
+        } else {
+            playerFleeStatus += "Your flee attempt was unsuccessful!";
+            creaturesBattle(false, true);
+        }    	
+    	return playerFleeStatus; 
+    }
+    
+    private String creatureAttacks(Creature attacker, Creature defender) {
+        String displayFightStatus = "";
+    	Random generator = new Random();
         int damageDone = attacker.totalAttack() + generator.nextInt((2*attacker.getDamageRange())+1) - attacker.getDamageRange();
         defender.reduceHP(damageDone);
-        System.out.println(attacker.getName() + " has done " + damageDone + " damage!");
-        defender.dspHP();    
+        displayFightStatus += attacker.getName() + " has done " + damageDone + " damage!\n";
+        displayFightStatus += defender.creatureHP();
+        
+        return displayFightStatus;
+    }
+    
+    private String creaturesBattle(boolean playerFights, boolean monsterFights) {
+    	String displayFightTurn = "";
+        if (playerFights) {
+        	displayFightTurn += creatureAttacks(player, monster);
+        	if(monster.isDead()) return displayFightTurn;
+        }
+        if (monsterFights)
+        	displayFightTurn += creatureAttacks(monster, player);
+        return displayFightTurn;
     }
     
     /**
      * A procedure to help the player decide what to do during a battle 
      */
-    private void printBattleHelp() {
-        System.out.println("You are currently in a battle.\nYou cannot move past this room until you kill the monster.");
-        System.out.println("Your command words are:");
-        bParser.dspAllCommands();
+    
+    private String dspBattleHelp() {
+    	String s = "You are currently in a battle.\nYou cannot move past this room until you kill the monster.\n";
+    	s+= "Your command words are:" + bParser.showAllCommands();
+    	return s;
     }
 }

@@ -54,9 +54,6 @@ public class Parser {
      * Show all commands. This is only here to allow Game to know all about the CommandWords
      * but it can find out about them through the Parser
      */
-    public void dspAllCommands() {
-        commands.showAll();
-    }
     
     public String showAllCommands() {
     	return commands.dspAllCommands();

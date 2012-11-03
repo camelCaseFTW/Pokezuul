@@ -60,15 +60,10 @@ public class CommandWords
     /**
      * Print out all the possible commands
      */
-    public void showAll() {
-        for(String command : validCommands.keySet())
-            System.out.print(command + "  ");
-        System.out.println();
-    }
     
     public String dspAllCommands() {
     	String s = "";
-    	for(String command : validCommands.keySet()) s+= command + " ";
+    	for(String command : validCommands.keySet()) s+= command + "  ";
     	return s;
     }
 }
