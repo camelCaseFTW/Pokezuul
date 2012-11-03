@@ -46,7 +46,5 @@ public abstract class Creature extends ItemHolder {
     	return name + "'s current HP is " + currentHP + "/" + maxHP;
     }
     
-    public String creatureStatus() {
-    	return creatureHP() + "\n" + name + "'s attack power is " + attackPower;
-    }
+    public abstract String creatureStatus();
 }

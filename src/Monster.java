@@ -17,4 +17,8 @@ public class Monster extends Creature{
         maxHP = 8;
         currentHP = 8;
     }
+    
+    public String creatureStatus() {
+		return creatureHP() + "\n" + name + "'s attack power is " + attackPower;
+	}
 }

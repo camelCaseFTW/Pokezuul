@@ -151,27 +151,6 @@ public class Player extends Creature{
      * This might be moved to player class soon
      */
     
-    public void pickUpItem(Command command) {
-        Item removingItem = null;
-        
-        if(!command.hasSecondWord()) {
-            System.out.println("Pickup what?");
-            return;
-        }
-        
-        String itemName = command.getSecondWord();
-        
-        for (Item item : currentRoom.getItemList())
-            if (item.getName().equals(itemName))
-                removingItem = item;
-           
-        if (!(removingItem==null)) {
-            System.out.println(removingItem + " has been picked up");
-            currentRoom.removeItem(removingItem);
-            insertItem(removingItem);
-        } else System.out.println("Item doesn't exist");
-    }
-    
     public String playerPickup (Command command) {
         Item removingItem = null;
         
@@ -191,15 +170,7 @@ public class Player extends Creature{
             return removingItem + " has been picked up";
         } else return "Item doesn't exist";
    }
-    
-    public void dspInventory() {
-        String allItems = getAllItems();
-        System.out.print("Inventory:");
-        if (allItems.length()>0) System.out.print(allItems);
-        else System.out.print(" -Empty-");
-        System.out.println();
-    }
-    
+
     public String dspPlayerInventory() {
     	String s = "Inventory:";
     	String allItems = getAllItems();
@@ -211,29 +182,6 @@ public class Player extends Creature{
     /*
      * Player wields and item to become more powerful (but the item will still be in the inventory)
      */
-    public void equipItem(Command command) {
-        Weapon newWeapon = null;
-        String itemName;
-        
-        if(!command.hasSecondWord()) {
-            System.out.println("Equip what?");
-            return;
-        }
-        
-        itemName = command.getSecondWord();
-        for (Item item : items) {
-            if (item.getName().equals(itemName)) {
-                if (item instanceof Weapon) {
-                    newWeapon = (Weapon)item;
-                }
-            }
-        }
-        if (!(newWeapon==null)) {
-            equippedItem = newWeapon;
-            bonusAttack = newWeapon.getWeaponAtk();
-            System.out.println(itemName + " has been equipped!");
-        } else System.out.println("Weapon cannot be equipped or weapon doesn't exist!");
-    }
     
     public String playerEquip(Command command) {
         Weapon newWeapon = null;
@@ -259,44 +207,10 @@ public class Player extends Creature{
    	
     }
     
-    public void deequipItem() {
-        bonusAttack = 0;
-        equippedItem = null;
-    }
-    
     public String playerDeequip() {
     	bonusAttack = 0;
         equippedItem = null;
         return "Item has been deequipped.";
-    }
-
-    public void useItem(Command command) {
-        Consumable consume = null;
-        String itemName;
-        
-        if(!command.hasSecondWord()) {
-            System.out.println("Use what?");
-            return;
-        }
-        
-        itemName = command.getSecondWord();
-        for (Item item : items) {
-            if (item.getName().equals(itemName)) {
-                if (item instanceof Consumable) {
-                    consume = (Consumable)item;
-                }
-            }
-        }
-        if (!(consume==null)) {
-            int healthHealed;
-            if (consume.getHealthHealed()>(maxHP - currentHP))healthHealed = maxHP-currentHP;
-            else healthHealed = consume.getHealthHealed();            
-            currentHP += healthHealed;
-            
-            System.out.println(itemName + " has healed " + healthHealed +"HP!");
-            dspHP();
-            removeItem(consume);
-        } else System.out.println("Consumable cannot be used or consumable doesn't exist!");
     }
 
     public String playerUse(Command command) {
@@ -327,31 +241,6 @@ public class Player extends Creature{
     	
     	return s;
     }
-    
-    public void examineItem(Command command) {
-        Item examine = null;
-        String itemName;
-        List<Item> tempList = new ArrayList<Item>();
-        
-        if(!command.hasSecondWord()) {
-            System.out.println("Item doesn't exist in your inventory or the room");
-            return;
-        }
-        
-        itemName = command.getSecondWord();
-        
-        tempList.addAll(items);
-        tempList.addAll(currentRoom.getItemList());
-        
-        for (Item item : tempList) {
-            if (item.getName().equals(itemName)) {
-                examine = item;
-            }
-        }
-        if (!(examine==null)) {
-            System.out.println(itemName + ": " + examine.getDescription());
-        } else System.out.println("Consumable cannot be used or consumable doesn't exist!");
-    }
 
     public String playerExamine(Command command) {
         Item examine = null;
@@ -380,54 +269,24 @@ public class Player extends Creature{
     /**
      * See what the room is about (its description), what it has, and what are it's exits
      */
-    public void look() {
-        String tempItemList = currentRoom.getAllItems();
-        
-        System.out.println("You are " + currentRoom.getDescription());
-        System.out.print("Items:");
-        if (tempItemList.length()>0) System.out.print(currentRoom.getAllItems());
-        else System.out.print(" -None-");
-        System.out.println();
-        System.out.print("Exits:");
-        System.out.print(currentRoom.getAllExits());
-        System.out.println();
-    }
     
     public String playerLook() {
     	String s = "";
-    	String tempItemList = currentRoom.getAllExits();
+    	String tempItemList = currentRoom.getAllItems();
     	
     	s += "You are " + currentRoom.getDescription() + "\n"
     			+ "Items:\n";
         if (tempItemList.length()>0) s+= currentRoom.getAllItems() + "\n";
         else s+= " -None-\n";
         s+= "Exits:\n" +
-        		currentRoom.getAllExits() + "\n";
+        		currentRoom.getAllExits();
     	return s;
     }
-    
-    public void processCommand(Command command) {
-         CommandTypes commandWord = command.getCommandWord();
-        //This system must be changed later to separate the commands sent to game and commands sent to players
-        if (commandWord == CommandTypes.LOOK) {
-            look();
-        } else if (commandWord == CommandTypes.PICKUP) {
-            pickUpItem(command);
-        } else if (commandWord == CommandTypes.INVENTORY) { 
-            dspInventory();
-        } else if (commandWord == CommandTypes.USE) { 
-            useItem(command);
-        } else if (commandWord == CommandTypes.STATUS) {
-            dspStatus();
-        } else if (commandWord == CommandTypes.EQUIP) {
-            equipItem(command);
-        } else if (commandWord == CommandTypes.DEEQUIP) {
-            deequipItem();
-        } else if (commandWord == CommandTypes.EXAMINE) {
-            examineItem(command);
-        }
-    }
 
+    public boolean inBattle() {
+    	return currentRoom.hasMonster();
+    }
+    
     public String processPlayerCmd(Command command) {
     	String temp = "";
     	CommandTypes commandWord = command.getCommandWord();
@@ -451,11 +310,11 @@ public class Player extends Creature{
         } else if (commandWord == CommandTypes.GO) {
         	temp = playerMove(command);
         }
-  	
-    	
-    	
-    	
     	return temp;
+    }
+    
+    public String creatureStatus() {
+    	return creatureHP() + "\n" + name + "'s attack power is " + attackPower + "+" + bonusAttack;
     }
     
 }

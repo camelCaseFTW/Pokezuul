@@ -125,7 +125,8 @@ class GameView extends JFrame {
 
 	public static void main(String[] args) {
 		GameView v = new GameView();
-		GameController c = new GameController(v);
+		Game g = new Game();
+		GameController c = new GameController(v, g);
 		
 		v.setVisible(true);
 	}

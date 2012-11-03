@@ -46,37 +46,7 @@ public class Game {
 
     /**
      * Create all the rooms and link their exits together.
-     */
-    public void createRooms() {
-        Room outside, theater, pub, lab, office;
-      
-        // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        theater.spawnMonster(new Monster("A vampire"));
-        theater.getMonster().insertItem(new Weapon("SuperSword", 3));
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
-        
-        // initialise room exits
-
-        outside.setExits("east", theater);
-        outside.setExits("south", lab);
-        outside.setExits("west", pub);
-        theater.setExits("west", outside);
-        pub.setExits("east", outside);
-        lab.setExits("north", outside);
-        lab.setExits("east", office);
-        office.setExits("west", lab);
-
-        outside.insertItem(new Item("GoldenKey"));
-        pub.insertItem(new Weapon("Sword", 2));
-        lab.insertItem(new Consumable("SmallPotion", 100));
-        
-        p1.setRoom(outside);
-    }
-    
+     */    
     public void initializeGame() {
         Room outside, theater, pub, lab, office;
         
@@ -104,12 +74,14 @@ public class Game {
         pub.insertItem(new Weapon("Sword", 2));
         lab.insertItem(new Consumable("SmallPotion", 100));
         
-        p1.setRoom(outside);    	
+        p1.setRoom(outside); 
+        gameOver = false;
     }
 
     /**
      *  Main play routine.  Loops until end of play.
      */
+/*
     public void play() {            
         printWelcome();
         p1.look();
@@ -120,9 +92,9 @@ public class Game {
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
-            /*
-             * If the player and a room meet, IT'S GO TIME!
-             */
+            
+             //* If the player and a room meet, IT'S GO TIME!
+             
             if (p1.getRoom().hasMonster()) {                
                 System.out.println("You have encountered a(n) " + p1.getRoom().getMonster().getName());
                 Combat combat = new Combat(p1, p1.getRoom().getMonster());
@@ -140,7 +112,8 @@ public class Game {
         }
         System.out.println("Game Over. Thanks for playing!");
     }
-
+*/
+    
     public String playGame(String userInput) {
     	String gameStatus = "";
     	Command command = parser.getUserCommand(userInput);
@@ -156,14 +129,6 @@ public class Game {
     /**
      * Print out the opening message for the player.
      */
-    private void printWelcome() {
-        System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
-        System.out.println("Type '" + CommandTypes.HELP + "' if you need help.");
-        System.out.println();
-    }
-    
     public String dspWelcome() {
     	String s = "";
     	s += "Welcome to the World of PokeZuul!"
@@ -177,27 +142,6 @@ public class Game {
      * @param command The command to be processed.
      * @return true If the command ends the game, false otherwise.
      */
-    private boolean processCommand(Command command) {
-        boolean wantToQuit = false;
-        
-        CommandTypes commandWord = command.getCommandWord();
-        //This system must be changed later to seperate the commands sent to game and commands sent to players
-        if (commandWord == CommandTypes.UNKNOWN) {
-            System.out.println("I don't know what you mean...");
-            return false;            
-        } else if (commandWord == CommandTypes.HELP) {
-            printHelp();
-        } else if (commandWord == CommandTypes.QUIT) {
-            wantToQuit = quit(command);
-        } else if (commandWord == CommandTypes.GO) {
-            goRoom(command);
-        } else {
-            p1.processCommand(command);
-        }
-
-        return wantToQuit;
-    }
-    
     private String processGameCmd(Command command) {
     	CommandTypes commandWord = command.getCommandWord();
     	String s = "";
@@ -210,27 +154,16 @@ public class Game {
             gameOver = true;
         	return "You have quit the game";
         } else {
-            p1.processCommand(command);
+            s = p1.processPlayerCmd(command);
         }
         return s;
     }
     
-    
-    
-    // implementations of user commands:
-
     /**
      * Print out some help information.
      * Here we print some stupid, cryptic message and a list of the 
      * command words.
      */
-    private void printHelp() 
-    {
-        System.out.println("You are lost. You are alone. You wander around at the university.");
-        p1.look();
-        System.out.println("Your command words are:");
-        parser.dspAllCommands();
-    }
     
     public String dspHelp() {
     	String s = "";
@@ -239,35 +172,6 @@ public class Game {
     			+ "Your command words are:\n"
     			+ parser.showAllCommands();
     	return s;
-    }
-    
-    /** 
-     * Try to go in one direction. If there is an exit, enter
-     * the new room, otherwise print an error message.
-     */
-    private void goRoom(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
-        }
-        p1.goRoom(command.getSecondWord());
-    }
-    
-    /** 
-     * "Quit" was entered. Check the rest of the command to see
-     * whether we really quit the game.
-     * @return true, if this command quits the game, false otherwise.
-     */
-    private boolean quit(Command command) 
-    {
-        if(command.hasSecondWord()) {
-            System.out.println("Quit what?");
-            return false;
-        } else {
-            return true;  // signal that we want to quit
-        }
     }
     
     public boolean isGameOver() {

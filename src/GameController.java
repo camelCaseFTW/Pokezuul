@@ -1,14 +1,12 @@
 import java.awt.event.*;
-import java.util.Scanner;
-import java.util.StringTokenizer;
 
 public class GameController {
 	
 	protected Game model;
 	protected GameView view;
 	
-	GameController(GameView v) {
-		//model = g;
+	GameController(GameView v, Game g) {
+		model = g;
 		view = v;
 			
 		view.addQuitGameListener(new QuitGameListener());
@@ -22,19 +20,28 @@ public class GameController {
 			try {
 				if (!(userInput.length()>0)) throw new NullPointerException();
 				status = model.playGame(userInput);
+				view.dspMessage(dspUserInput(userInput));
 				view.dspMessage(status);
 				view.resetUserInput();
 			} catch(NullPointerException nex) {
 				view.showError("You did not enter a command!");
 			}
 		}
+		private String dspUserInput(String input) {
+			String s = "\n----------------------\n";
+			s += "** You typed '" + input + "'";
+			return s;
+		}
 	}
 	
 	class NewGameListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			Game newGame = new Game();
+			newGame.initializeGame();
+			
 			view.enableCommandPanel();
 			view.addCommandListener(new CommandListener());
-			model.initializeGame();
+			model = newGame;
 		}
 	}
 	
