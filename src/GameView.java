@@ -1,6 +1,5 @@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import java.awt.event.*;
 
@@ -35,8 +34,8 @@ class GameView extends JFrame {
 	
 	private GameSystem game_model;
 
-	public GameView() {
-		//game_model = game;
+	public GameView(GameSystem g) {
+		game_model = g;
 
 		gameMenu.add(newGame);
 		gameMenu.add(saveGame);
@@ -97,6 +96,11 @@ class GameView extends JFrame {
 		commandButton.setEnabled(true);
 	}
 	
+	public void disableCommandPanel() {
+		commandInput.setEditable(false);
+		commandButton.setEnabled(false);
+	}
+	
 	public void resetUserInput() {
 		commandInput.setText("");
 	}
@@ -124,8 +128,8 @@ class GameView extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		GameView v = new GameView();
 		GameSystem g = new GameSystem();
+		GameView v = new GameView(g);
 		GameController c = new GameController(v, g);
 		
 		v.setVisible(true);

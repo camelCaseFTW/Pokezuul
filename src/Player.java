@@ -8,6 +8,7 @@ import java.util.*;
  * @author Alok Swamy and Eshan
  */
 public class Player extends Creature{
+		
     private Room currentRoom;
     private Stack<Room> steps;
     
@@ -48,50 +49,6 @@ public class Player extends Creature{
      * 
      * Undo portion is written entirely by Eshan
      */
-    public void goRoom(String room) {
-        // Try to leave current room.
-        Room nextRoom = null;
-        nextRoom = currentRoom.getExitRoom(room);
-        if (nextRoom == null) {
-            if(!room.equalsIgnoreCase("back")) // undo command E.K
-            {
-                System.out.println("There is no door!");
-                nextRoom = currentRoom; // for refactoring the Else to get a more efficient Code for adding the Undo Command ( Go back). E.K
-            }
-        } 
-        //else { else has been refactored.
-        if(room.equalsIgnoreCase("back"))
-        {
-            //if(steps.isEmpty()) for some reason the newly created stack shows elementCount = 1, but there is no elements in it. there fore:   E.K
-            if(steps.size()<1)
-            {
-                System.out.println("** You are where you started.");
-                nextRoom=currentRoom;
-            }
-            else
-            {
-                nextRoom = steps.pop();
-            }
-        }
-        else if(currentRoom != nextRoom)//Keeping track of the steps. E.K
-        {
-            steps.push(currentRoom);
-        }
-    
-        if (currentRoom.isExitable()) {
-            if (nextRoom == null) {
-                System.out.println("There is no door!");
-            } else {
-                if(nextRoom.isEnterable()) currentRoom = nextRoom;
-                else System.out.println(Room.unenterable);
-                System.out.println();
-                currentRoom.look();
-            }
-        } else {
-            System.out.println(Room.unexitable);
-        }
-    }
-    
     
     public String playerMove(Command command) {
         // Try to leave current room.
@@ -133,7 +90,7 @@ public class Player extends Creature{
     
         if (currentRoom.isExitable()) {
             if (nextRoom == null) {
-                return "There is no door!";
+                return "There is no door!\n";
             } else {
                 if(nextRoom.isEnterable()) currentRoom = nextRoom;
                 else return Room.unenterable;
@@ -173,9 +130,7 @@ public class Player extends Creature{
 
     public String dspPlayerInventory() {
     	String s = "Inventory:";
-    	String allItems = getAllItems();
-        if (allItems.length()>0) s+= allItems;
-        else s+= " -Empty-";	
+        s+= getAllItems();	
     	return s;
     }
     
@@ -272,12 +227,10 @@ public class Player extends Creature{
     
     public String playerLook() {
     	String s = "";
-    	String tempItemList = currentRoom.getAllItems();
     	
     	s += "You are " + currentRoom.getDescription() + "\n"
     			+ "Items:\n";
-        if (tempItemList.length()>0) s+= currentRoom.getAllItems() + "\n";
-        else s+= " -None-\n";
+        s+= currentRoom.getAllItems() + "\n";
         s+= "Exits:\n" +
         		currentRoom.getAllExits();
     	return s;

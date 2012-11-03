@@ -28,10 +28,10 @@
 public class Game {
 	
 	public static final String GAME_END = "Game Over! 'Game > New Game' to start a new game.";
+	public static final String NEW_LINE = "\n";
 	
 	private boolean gameOver;
     private Parser parser;
-    private BattleParser bParser;
     private Player p1;
     
     /**
@@ -39,7 +39,6 @@ public class Game {
      */
     public Game() {
         parser = new Parser();
-        bParser = new BattleParser();
         p1 = new Player();
         gameOver = true;
     }
@@ -119,9 +118,12 @@ public class Game {
     	if (!(p1.inBattle())) {
     		Command command = parser.getUserCommand(userInput);
     		gameStatus += processGameCmd(command);
+    		if(p1.inBattle()){
+    			gameStatus += Combat.FIGHT_INITIATED;
+    		}
     	} else {
     		Combat combat = new Combat(p1, p1.getRoom().getMonster());
-    		
+    		gameStatus += combat.fight(userInput);
     	}
 		if (p1.isDead()) {
 			gameStatus += "You have died :(\n" + GAME_END;
@@ -135,9 +137,13 @@ public class Game {
      */
     public String dspWelcome() {
     	String s = "";
-    	s += "Welcome to the World of PokeZuul!"
+    	s += "\n---------------------------------------\n"
+    			+ "Welcome to the World of PokeZuul!"
     			+ "\nPrepare for a kick-butt adventure that will block your socks off!"
-    			+ "\nType '" + CommandTypes.HELP + "' if you need help.\n";	
+    			+ "\nType '" + CommandTypes.HELP + "' if you need help."
+    			+ NEW_LINE + NEW_LINE
+    			+ p1.playerLook();
+    	
     	return s;
     }
 
@@ -156,7 +162,7 @@ public class Game {
             return dspHelp();
         } else if (commandWord == CommandTypes.QUIT) {
             gameOver = true;
-        	return "You have quit the game";
+        	return "You have quit the game" + NEW_LINE + GAME_END;
         } else {
             s = p1.processPlayerCmd(command);
         }
@@ -173,6 +179,7 @@ public class Game {
     	String s = "";
     	s += "You are lost. You are alone. You wander around at the university.\n"
     			+ p1.playerLook()
+    			+ NEW_LINE
     			+ "Your command words are:\n"
     			+ parser.showAllCommands();
     	return s;

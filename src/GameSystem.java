@@ -2,13 +2,16 @@ public class GameSystem {
 	private Game game;
 	
 	public GameSystem() {
-		game = new Game();
-		game.initializeGame();
+		game = null;
 	}
 	
 	public String processInput(String s) {
-		if (game.isGameOver()) return Game.GAME_END;
+		if (gameFinished()) return Game.GAME_END;
 		else return game.playGame(s);
+	}
+	
+	public boolean gameFinished() {
+		return game.isGameOver();
 	}
 	
 	public void newGame() {
@@ -17,7 +20,12 @@ public class GameSystem {
 		game = newGame;
 	}
 	
-	public Game getGame() {
-		return game;
+	public boolean gameRunning() {
+		if (game != null) return true;
+		return false;
+	}
+	
+	public String dspGameWelcome() {
+		return game.dspWelcome();
 	}
 }

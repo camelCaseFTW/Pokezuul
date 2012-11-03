@@ -23,23 +23,24 @@ public class GameController {
 				view.dspMessage(dspUserInput(userInput));
 				view.dspMessage(status);
 				view.resetUserInput();
+				if (model.gameFinished()) view.disableCommandPanel();
 			} catch(NullPointerException nex) {
 				view.showError("You did not enter a command!");
 			}
 		}
 		private String dspUserInput(String input) {
-			String s = "\n----------------------\n";
-			s += "** You typed '" + input + "'";
-			return s;
+			return "\n** You typed '" + input + "'";
 		}
 	}
 	
 	class NewGameListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			if (!(model.gameRunning())) {
+				view.enableCommandPanel();
+				view.addCommandListener(new CommandListener());
+			}
 			model.newGame();
-			
-			view.enableCommandPanel();
-			view.addCommandListener(new CommandListener());
+			view.dspMessage(model.dspGameWelcome());
 		}
 	}
 	

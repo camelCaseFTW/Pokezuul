@@ -5,6 +5,8 @@ import java.util.*;
  * @author Alok Swamy, edited by Eshan
  */
 public abstract class ItemHolder {
+	
+	private static final String NO_ITEMS = " -None-";
     protected List<Item> items;
     
     public ItemHolder() {
@@ -38,6 +40,7 @@ public abstract class ItemHolder {
         while(iterator.hasNext()) {
             allItems = allItems + " " + iterator.next();
         }
+        if (allItems.length()==0) allItems = NO_ITEMS;
         return allItems;
     }
     

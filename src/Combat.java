@@ -1,7 +1,11 @@
 import java.util.Random;
 
 public class Combat {
-    private BattleParser bParser;
+	
+	public static final String FIGHT_INITIATED = "\nYou have encountered a monster!";
+	public static final String FIGHT_WON = "\nYou have won the battle! You continue...";
+	public static final String NEW_LINE = "\n";	
+	private BattleParser bParser;
     private Player player;
     private Monster monster;
 
@@ -14,7 +18,12 @@ public class Combat {
     public String fight(String userInput) {
     	String fightStatus = "";
         BattleCommand bCommand = bParser.getBattleCommand(userInput);
-        fightStatus += processBattleCmd(bCommand);    	
+        fightStatus += processBattleCmd(bCommand);
+        if (monster.isDead()) {
+        	fightStatus += "Items dropped by monster:" + monster.getAllItems();
+        	player.getRoom().removeMonster();
+        	fightStatus += FIGHT_WON;
+        }
     	return fightStatus;
     }
     
@@ -33,7 +42,7 @@ public class Combat {
         } else if (commandWord == BattleCommandTypes.FIGHT) {
             s+= creaturesBattle(true, true);
         } else if (commandWord == BattleCommandTypes.IDLE){
-            s+= "You used Splash. It does nothing";
+            s+= "You used Splash. It does nothing.\n";
             s+= creaturesBattle(false, true);
         } else if (commandWord == BattleCommandTypes.FLEE) {
             s+= playerFlees();
@@ -50,7 +59,7 @@ public class Combat {
         
         if(escape==0) {
             playerFleeStatus += "You have fled!";
-            player.goRoom("back");
+            playerFleeStatus += player.playerMove(new Command(CommandTypes.GO, "back"));
         } else {
             playerFleeStatus += "Your flee attempt was unsuccessful!";
             creaturesBattle(false, true);
@@ -64,7 +73,7 @@ public class Combat {
         int damageDone = attacker.totalAttack() + generator.nextInt((2*attacker.getDamageRange())+1) - attacker.getDamageRange();
         defender.reduceHP(damageDone);
         displayFightStatus += attacker.getName() + " has done " + damageDone + " damage!\n";
-        displayFightStatus += defender.creatureHP();
+        displayFightStatus += defender.creatureHP() + NEW_LINE;
         
         return displayFightStatus;
     }

@@ -112,22 +112,6 @@ public class Room extends ItemHolder {
     public boolean isEnterable() {
         return enterable;
     }
-    
-    /**
-     * See what the room is about (its description), what it has, and what are it's exits
-     */
-    public void look() {
-        String tempItemList = getAllItems();
-        
-        System.out.println("You are " + getDescription());
-        System.out.print("Items:");
-        if (tempItemList.length()>0) System.out.print(getAllItems());
-        else System.out.print(" -None-");
-        System.out.println();
-        System.out.print("Exits:");
-        System.out.print(getAllExits());
-        System.out.println();
-    }
 
     /**
      * @return The description of the room.
