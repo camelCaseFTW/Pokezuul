@@ -5,22 +5,22 @@ public class Combat {
 	public static final String FIGHT_INITIATED = "\nYou have encountered a monster!";
 	public static final String FIGHT_WON = "\nYou have won the battle! You continue...";
 	public static final String NEW_LINE = "\n";	
-	private BattleParser bParser;
+	private Parser parser;
     private Player player;
     private Monster monster;
 
-    public Combat(Player p1, Monster m1) {
+    public Combat(Player p1, Monster m1, Parser p) {
         player = p1;
         monster = m1;
-        bParser = new BattleParser();
+        parser = p;
     }
     
     public String fight(String userInput) {
     	String fightStatus = "";
-        BattleCommand bCommand = bParser.getBattleCommand(userInput);
+        BattleCommand bCommand = parser.getUserBattleCommand(userInput);
         fightStatus += processBattleCmd(bCommand);
         if (monster.isDead()) {
-        	fightStatus += "Items dropped by monster:" + monster.getAllItems();
+        	fightStatus += "Items dropped by monster:\n" + monster.getAllItems();
         	player.getRoom().removeMonster();
         	fightStatus += FIGHT_WON;
         }
@@ -95,7 +95,7 @@ public class Combat {
     
     private String dspBattleHelp() {
     	String s = "You are currently in a battle.\nYou cannot move past this room until you kill the monster.\n";
-    	s+= "Your command words are:" + bParser.showAllCommands();
+    	s+= "Your command words are\n:" + parser.showAllBattleCommands();
     	return s;
     }
 }

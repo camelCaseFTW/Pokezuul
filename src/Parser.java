@@ -49,6 +49,18 @@ public class Parser {
 
         return new Command(commands.getCommandWord(word1), word2);
     }
+
+    public BattleCommand getUserBattleCommand(String s) {
+        String word1 = null;
+
+        StringTokenizer tokenizer = new StringTokenizer(s);
+        
+        if(tokenizer.hasMoreTokens())
+            word1 = tokenizer.nextToken();
+
+        return new BattleCommand(commands.getBattleCommandWord(word1));
+    }
+    
     
     /**
      * Show all commands. This is only here to allow Game to know all about the CommandWords
@@ -57,5 +69,9 @@ public class Parser {
     
     public String showAllCommands() {
     	return commands.dspAllCommands();
+    }
+    
+    public String showAllBattleCommands() {
+    	return commands.dspAllBattleCommands();
     }
 }

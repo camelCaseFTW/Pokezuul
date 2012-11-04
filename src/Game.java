@@ -79,40 +79,7 @@ public class Game {
 
     /**
      *  Main play routine.  Loops until end of play.
-     */
-/*
-    public void play() {            
-        printWelcome();
-        p1.look();
-        
-        // Enter the main command loop.  Here we repeatedly read commands and
-        // execute them until the game is over.
-        boolean finished = false;
-        while (! finished) {
-            Command command = parser.getCommand();
-            finished = processCommand(command);
-            
-             //* If the player and a room meet, IT'S GO TIME!
-             
-            if (p1.getRoom().hasMonster()) {                
-                System.out.println("You have encountered a(n) " + p1.getRoom().getMonster().getName());
-                Combat combat = new Combat(p1, p1.getRoom().getMonster());
-                combat.battle();
-                if (p1.isDead()) {
-                    System.out.println("\nOh no! You have died.");
-                    finished = true;
-                }
-                if (p1.getRoom().getMonster().isDead()) {
-                    p1.getRoom().removeMonster();
-                    System.out.println("\nYou have won the battle!\n");
-                    p1.look();
-                }
-            }
-        }
-        System.out.println("Game Over. Thanks for playing!");
-    }
-*/
-    
+     */    
     public String playGame(String userInput) {
     	String gameStatus = "";
     	if (!(p1.inBattle())) {
@@ -122,7 +89,7 @@ public class Game {
     			gameStatus += Combat.FIGHT_INITIATED;
     		}
     	} else {
-    		Combat combat = new Combat(p1, p1.getRoom().getMonster());
+    		Combat combat = new Combat(p1, p1.getRoom().getMonster(), parser);
     		gameStatus += combat.fight(userInput);
     	}
 		if (p1.isDead()) {

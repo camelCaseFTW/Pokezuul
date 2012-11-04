@@ -6,7 +6,7 @@ import java.util.*;
  */
 public abstract class ItemHolder {
 	
-	private static final String NO_ITEMS = " -None-";
+	private static final String NO_ITEMS = " -Empty-";
     protected List<Item> items;
     
     public ItemHolder() {
@@ -38,7 +38,7 @@ public abstract class ItemHolder {
         Iterator<Item> iterator = items.iterator(); // Fixed the warning by adding the generic type, <Item>; E.K
         
         while(iterator.hasNext()) {
-            allItems = allItems + " " + iterator.next();
+            allItems = allItems + "  " + iterator.next();
         }
         if (allItems.length()==0) allItems = NO_ITEMS;
         return allItems;

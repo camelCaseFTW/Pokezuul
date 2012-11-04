@@ -129,7 +129,7 @@ public class Player extends Creature{
    }
 
     public String dspPlayerInventory() {
-    	String s = "Inventory:";
+    	String s = "Inventory:\n";
         s+= getAllItems();	
     	return s;
     }

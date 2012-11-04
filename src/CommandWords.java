@@ -20,18 +20,22 @@ public class CommandWords
     // A mapping between a command word and the CommandWord
     // associated with it.
     private HashMap<String, CommandTypes> validCommands;
-
+    private HashMap<String, BattleCommandTypes> validBattleCommands;
+    
     /**
      * Constructor - initialise the command words.
      */
     public CommandWords()
     {
         validCommands = new HashMap<String, CommandTypes>();
-        for(CommandTypes command : CommandTypes.values()) {
-            if(command != CommandTypes.UNKNOWN) {
+        for(CommandTypes command : CommandTypes.values())
+            if(command != CommandTypes.UNKNOWN)
                 validCommands.put(command.toString(), command);
-            }
-        }
+        
+        validBattleCommands = new HashMap<String, BattleCommandTypes>();
+        for(BattleCommandTypes bCommand : BattleCommandTypes.values())
+            if(bCommand != BattleCommandTypes.UNKNOWN)
+                validBattleCommands.put(bCommand.toString(), bCommand);   
     }
 
     /**
@@ -40,14 +44,16 @@ public class CommandWords
      * @return The CommandType correspondng to commandWord, or UNKNOWN
      *         if it is not a valid command word.
      */
-    public CommandTypes getCommandWord(String commandWord)
-    {
+    public CommandTypes getCommandWord(String commandWord) {
         CommandTypes command = validCommands.get(commandWord);
-        if(command != null) {
-            return command;
-        } else {
-            return CommandTypes.UNKNOWN;
-        }
+        if(command != null) return command;
+        else return CommandTypes.UNKNOWN;
+    }
+
+    public BattleCommandTypes getBattleCommandWord(String bCommandWord) {
+        BattleCommandTypes bCommand = validBattleCommands.get(bCommandWord);
+        if(bCommand != null) return bCommand;
+        else return BattleCommandTypes.UNKNOWN;
     }
     
     /**
@@ -57,13 +63,23 @@ public class CommandWords
         return validCommands.containsKey(aString);
     }
     
+    public boolean isBattleCommand(String aString) {
+    	return validBattleCommands.containsKey(aString);
+    }
+    
     /**
      * Print out all the possible commands
      */
     
     public String dspAllCommands() {
     	String s = "";
-    	for(String command : validCommands.keySet()) s+= command + "  ";
+    	for(String command : validCommands.keySet()) s+= "  " + command;
+    	return s;
+    }
+    
+    public String dspAllBattleCommands() {
+    	String s = "";
+    	for(String bCommand : validBattleCommands.keySet()) s+= "  " + bCommand;
     	return s;
     }
 }
