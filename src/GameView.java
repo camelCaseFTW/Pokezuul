@@ -3,7 +3,7 @@ import javax.swing.*;
 
 import java.awt.event.*;
 
-class GameView extends JFrame {
+class GameView extends JFrame implements GameListener {
 	
 	private static final String newline = "\n";
 	
@@ -126,10 +126,19 @@ class GameView extends JFrame {
         messageDisplayer.append(message + newline);
         messageDisplayer.setCaretPosition(messageDisplayer.getDocument().getLength());		
 	}
+	
+	public void commandProcessed(GameEvent e) {
+		dspMessage(((GameSystem)e.getSource()).getGameStatus());
+	}
+	
+	public void endGame() {
+		disableCommandPanel();
+	}
 
 	public static void main(String[] args) {
 		GameSystem g = new GameSystem();
 		GameView v = new GameView(g);
+		g.addGameListener(v);
 		GameController c = new GameController(v, g);
 		
 		v.setVisible(true);

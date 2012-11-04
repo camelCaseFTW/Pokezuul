@@ -11,19 +11,17 @@ public class GameController {
 			
 		view.addQuitGameListener(new QuitGameListener());
 		view.addNewGameListener(new NewGameListener());
+		view.addCommandListener(new CommandListener());
 	}
 
 	class CommandListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			String userInput = view.getUserInput();
-			String status = "";
 			try {
 				if (!(userInput.length()>0)) throw new NullPointerException();
-				status = model.processInput(userInput);
 				view.dspMessage(dspUserInput(userInput));
-				view.dspMessage(status);
+				model.processCmd(userInput);
 				view.resetUserInput();
-				if (model.gameFinished()) view.disableCommandPanel();
 			} catch(NullPointerException nex) {
 				view.showError("You did not enter a command!");
 			}
@@ -35,12 +33,8 @@ public class GameController {
 	
 	class NewGameListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (!(model.gameRunning())) {
-				view.enableCommandPanel();
-				view.addCommandListener(new CommandListener());
-			}
+			view.enableCommandPanel();
 			model.newGame();
-			view.dspMessage(model.dspGameWelcome());
 		}
 	}
 	
