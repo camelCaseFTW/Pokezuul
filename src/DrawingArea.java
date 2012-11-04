@@ -53,25 +53,25 @@ class DrawingArea extends JPanel {
         
         	g.setFont(regular);
         	
-        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom("west") != null)
+        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.west) != null)
         	{
         		drawLeftArrow(g, 40, 150, 50, 150);
-        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom("west").toString(), 5, 145);
+        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.west).toString(), 5, 145);
         	}
-        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom("east") != null)
+        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.east) != null)
         	{
         		drawRightArrow(g, 260, 150, 250, 150);
-        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom("east").toString(), 260, 150);
+        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.east).toString(), 260, 150);
         	}
-        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom("north") != null)
+        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.north) != null)
         	{
         		drawUpArrow(g, 150, 40, 150, 50);
-        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom("north").toString(), 150, 20);
+        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.north).toString(), 150, 20);
         	}
-        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom("south") != null)
+        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.south) != null)
         	{
             	drawDownArrow(g, 150, 260, 150, 250);
-        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom("south").toString(), 150, 275);
+        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.south).toString(), 150, 275);
         	}
         	if(gameSystem.getGame().getPlayer().getRoom().hasMonster())
         	{

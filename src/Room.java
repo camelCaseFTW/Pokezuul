@@ -89,6 +89,9 @@ public class Room extends ItemHolder {
     public Room getExitRoom(String exitString) {
         return exits.get(exitString);
     }
+    public Room getExitRoom(Exit exit) {
+        return exits.get(exit.toString());
+    }
     
     /**
      * Returns a list of exits as a string
