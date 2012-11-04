@@ -35,8 +35,13 @@ class GameView extends JFrame implements GameListener {
 	private JScrollPane scrollPane;
 	
 	private GameSystem game_model;
-
+	/////////////////////////////////
+	public static GameSystem g;
+	private static GameView v; 
+	private DrawingArea drawing = new DrawingArea();
+    
 	public GameView(GameSystem g) {
+		
 		game_model = g;
 
 		gameMenu.add(newGame);
@@ -57,7 +62,9 @@ class GameView extends JFrame implements GameListener {
 		menuBar.add(helpMenu);
 		
 		mainPanel = new JPanel();
+		
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		
 
 		picturePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		commandPanel = new JPanel();
@@ -74,7 +81,20 @@ class GameView extends JFrame implements GameListener {
 		commandPanel.add(commandButton);
 		commandButton.setEnabled(false);
 		
-		picturePanel.add(new JLabel("MOO"));
+		//picturePanel.add(new JLabel("MOO"));
+		///////////////////////////////////////////////
+		drawing.setBackground(Color.white);
+		picturePanel.setLayout(new BorderLayout(5, 5));
+        picturePanel.add(drawing, BorderLayout.WEST);
+        
+         //... Set window characteristics
+        setContentPane(picturePanel);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Demo Drawing");
+        setLocationRelativeTo(null);  // Center window.
+        pack();
+			
+		/////////////////////////////////////////////
 		
 		mainPanel.add(picturePanel);
 		mainPanel.add(scrollPane);
@@ -87,6 +107,8 @@ class GameView extends JFrame implements GameListener {
 		this.setTitle("Zuul");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		dspMessage("Game > New Game to begin your adventure!");
+		
+		
 	}
 
 	public String getUserInput() {
@@ -130,6 +152,7 @@ class GameView extends JFrame implements GameListener {
 	}
 	
 	public void commandProcessed(GameEvent e) {
+		this.drawing.repaint();
 		dspMessage(e.getGameStatus());
 	}
 	
@@ -138,12 +161,18 @@ class GameView extends JFrame implements GameListener {
 	}
 
 	public static void main(String[] args) {
-		GameSystem g = new GameSystem();
-		GameView v = new GameView(g);
+		g = new GameSystem();
+		v= new GameView(g);
 		g.addGameListener(v);
 		GameController c = new GameController(v, g);
 		
 		v.setVisible(true);
 	}
+/////////////////////////////////////////////////////////////////////////
+	public GameSystem getGameSystem()
+	{
+		return g;
+	}
+
 
 }

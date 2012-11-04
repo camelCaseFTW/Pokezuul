@@ -30,6 +30,7 @@ public class Room extends ItemHolder {
     private Monster monster;
     private boolean exitable;
     private boolean enterable;
+    private String roomName;
     
     /**
      * Create a room described "description". Initially, it has
@@ -37,7 +38,8 @@ public class Room extends ItemHolder {
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) {
+    public Room(String description, String roomName) {
+    	this.roomName = roomName;
         this.description = description;
         exits = new HashMap<String, Room>();
         exitable = true;
@@ -45,7 +47,15 @@ public class Room extends ItemHolder {
         monster = null;
     }
 
-    public boolean hasMonster() {
+    public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	public boolean hasMonster() {
         if(!(monster==null)) return true;
         return false;
     }
@@ -119,6 +129,10 @@ public class Room extends ItemHolder {
     public String getDescription()
     {
         return description;
+    }
+    public String toString()
+    {
+    	return this.roomName;
     }
 
 }

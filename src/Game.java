@@ -50,13 +50,13 @@ public class Game {
         Room outside, theater, pub, lab, office;
         
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
+        outside = new Room("outside the main entrance of the university", "Outside");
+        theater = new Room("in a lecture theater", "Theater");
         theater.spawnMonster(new Monster("Vampire"));
         theater.getMonster().insertItem(new Weapon("SuperSword", 3));
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        pub = new Room("in the campus pub", "Pub");
+        lab = new Room("in a computing lab", "Lab");
+        office = new Room("in the computing admin office", "Office");
         
         // initialise room exits
 
@@ -155,4 +155,9 @@ public class Game {
     public boolean isGameOver() {
     	return gameOver;
     }
+    public Player getPlayer()
+    {
+    	return p1;
+    }
+    
 }
