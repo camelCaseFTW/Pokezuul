@@ -5,6 +5,8 @@ import java.awt.event.*;
 
 class GameView extends JFrame implements GameListener {
 	
+	private static final long serialVersionUID = 1L;
+
 	private static final String newline = "\n";
 	
 	private JMenuBar menuBar = new JMenuBar();
@@ -128,7 +130,7 @@ class GameView extends JFrame implements GameListener {
 	}
 	
 	public void commandProcessed(GameEvent e) {
-		dspMessage(((GameSystem)e.getSource()).getGameStatus());
+		dspMessage(e.getGameStatus());
 	}
 	
 	public void endGame() {
