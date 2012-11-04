@@ -84,7 +84,7 @@ class DrawingArea extends JPanel {
         		g.setColor(Color.GREEN);
         	    Font myFont = new Font("Serif", Font.ITALIC | Font.BOLD, 20);
         	    g.setFont(myFont);
-        	    if (gameSystem.getGame().getPlayer().getRoom().numOfItems() == 1)
+        	    if (gameSystem.getGame().getPlayer().getRoom().numOfItems() <= 1)
         	    	g.drawString(gameSystem.getGame().getPlayer().getRoom().getAllItems(), 100, 200);
         	    else g.drawString("*Multiple Items*", 100, 200);
         	}
