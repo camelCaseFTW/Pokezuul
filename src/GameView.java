@@ -35,15 +35,14 @@ class GameView extends JFrame implements GameListener {
 	private JScrollPane scrollPane;
 	
 	private GameSystem game_model;
-	/////////////////////////////////
-	public static GameSystem g;
-	private static GameView v; 
-	private DrawingArea drawing = new DrawingArea();
+
+	private DrawingArea drawing;
     
 	public GameView(GameSystem g) {
 		
 		game_model = g;
-
+		drawing = new DrawingArea(g);
+		
 		gameMenu.add(newGame);
 		gameMenu.add(saveGame);
 		saveGame.setEnabled(false);
@@ -80,8 +79,7 @@ class GameView extends JFrame implements GameListener {
 		commandInput.setEditable(false);
 		commandPanel.add(commandButton);
 		commandButton.setEnabled(false);
-		
-		//picturePanel.add(new JLabel("MOO"));
+
 		///////////////////////////////////////////////
 		drawing.setBackground(Color.white);
 		picturePanel.setLayout(new BorderLayout(5, 5));
@@ -161,18 +159,11 @@ class GameView extends JFrame implements GameListener {
 	}
 
 	public static void main(String[] args) {
-		g = new GameSystem();
-		v= new GameView(g);
+		GameSystem g = new GameSystem();
+		GameView v= new GameView(g);
 		g.addGameListener(v);
 		GameController c = new GameController(v, g);
 		
 		v.setVisible(true);
 	}
-/////////////////////////////////////////////////////////////////////////
-	public GameSystem getGameSystem()
-	{
-		return g;
-	}
-
-
 }

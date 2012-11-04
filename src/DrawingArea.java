@@ -22,12 +22,13 @@ class DrawingArea extends JPanel {
 	
 	//======================================================== fields
     private Color _ovalColor;      // Color of oval.
-
+    private GameSystem gameSystem;
+    
     //=================================================== constructor
-    public DrawingArea() {
+    public DrawingArea(GameSystem game) {
         _ovalColor = Color.black;  // Initial color.
         setPreferredSize(new Dimension(320,320));
-
+        gameSystem = game;
     }
 
     //================================================ paintComponent
@@ -38,10 +39,10 @@ class DrawingArea extends JPanel {
         
         
                 
-        if(GameView.g.getGame() != null )
+        if(gameSystem.getGame() != null )
         {
         	g.drawRect(50,50,200,200);
-        	room = GameView.g.getGame().getPlayer().getRoom();
+        	room = gameSystem.getGame().getPlayer().getRoom();
         
         	Font regular = g.getFont();
         	
@@ -52,27 +53,27 @@ class DrawingArea extends JPanel {
         
         	g.setFont(regular);
         	
-        	if( GameView.g.getGame().getPlayer().getRoom().getExitRoom("west") != null)
+        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom("west") != null)
         	{
         		drawLeftArrow(g, 40, 150, 50, 150);
-        		g.drawString(GameView.g.getGame().getPlayer().getRoom().getExitRoom("west").toString(), 5, 145);
+        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom("west").toString(), 5, 145);
         	}
-        	if( GameView.g.getGame().getPlayer().getRoom().getExitRoom("east") != null)
+        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom("east") != null)
         	{
         		drawRightArrow(g, 260, 150, 250, 150);
-        		g.drawString(GameView.g.getGame().getPlayer().getRoom().getExitRoom("east").toString(), 260, 150);
+        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom("east").toString(), 260, 150);
         	}
-        	if( GameView.g.getGame().getPlayer().getRoom().getExitRoom("north") != null)
+        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom("north") != null)
         	{
         		drawUpArrow(g, 150, 40, 150, 50);
-        		g.drawString(GameView.g.getGame().getPlayer().getRoom().getExitRoom("north").toString(), 150, 20);
+        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom("north").toString(), 150, 20);
         	}
-        	if( GameView.g.getGame().getPlayer().getRoom().getExitRoom("south") != null)
+        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom("south") != null)
         	{
             	drawDownArrow(g, 150, 260, 150, 250);
-        		g.drawString(GameView.g.getGame().getPlayer().getRoom().getExitRoom("south").toString(), 150, 275);
+        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom("south").toString(), 150, 275);
         	}
-        	if(GameView.g.getGame().getPlayer().getRoom().hasMonster())
+        	if(gameSystem.getGame().getPlayer().getRoom().hasMonster())
         	{
         		g.setColor(Color.RED);
         	    Font myFont = new Font("Serif", Font.ITALIC | Font.BOLD, 20);
@@ -80,12 +81,12 @@ class DrawingArea extends JPanel {
         	    g.drawString("Monster", 130, 70);
         	}
         	
-        	if(GameView.g.getGame().getPlayer().getRoom().getAllItems() != null)
+        	if(gameSystem.getGame().getPlayer().getRoom().getAllItems() != null)
         	{
         		g.setColor(Color.GREEN);
         	    Font myFont = new Font("Serif", Font.ITALIC | Font.BOLD, 20);
         	    g.setFont(myFont);
-        	    g.drawString(GameView.g.getGame().getPlayer().getRoom().getAllItems(), 100, 200);
+        	    g.drawString(gameSystem.getGame().getPlayer().getRoom().getAllItems(), 100, 200);
         	}
         	
         	
