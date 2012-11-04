@@ -41,7 +41,7 @@ class GameView extends JFrame implements GameListener {
 	public GameView(GameSystem g) {
 		
 		game_model = g;
-		drawing = new DrawingArea(g);
+		drawing = new DrawingArea(game_model);
 		
 		gameMenu.add(newGame);
 		gameMenu.add(saveGame);
@@ -162,6 +162,8 @@ class GameView extends JFrame implements GameListener {
 		GameSystem g = new GameSystem();
 		GameView v= new GameView(g);
 		g.addGameListener(v);
+		
+		@SuppressWarnings("unused")
 		GameController c = new GameController(v, g);
 		
 		v.setVisible(true);

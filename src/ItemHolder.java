@@ -47,4 +47,8 @@ public abstract class ItemHolder {
     public List<Item> getItemList() {
         return items;
     }
+    
+    public int numOfItems() {
+    	return items.size();
+    }
 }

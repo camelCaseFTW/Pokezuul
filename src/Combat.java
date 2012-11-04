@@ -2,7 +2,6 @@ import java.util.Random;
 
 public class Combat {
 	
-	public static final String FIGHT_INITIATED = "\nYou have encountered a monster!";
 	public static final String FIGHT_WON = "\nYou have won the battle! You continue...";
 	public static final String NEW_LINE = "\n";	
 	private Parser parser;

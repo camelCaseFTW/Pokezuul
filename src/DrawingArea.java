@@ -11,14 +11,12 @@ import javax.swing.*;
 ///////////////////////////////////////////////////////// DrawingArea
 class DrawingArea extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+	
 	private Room room;
 	protected int diameter=12;
 	protected int radius=diameter/2;
 	protected double mlength=0;
-	private int rect_x0 = 50;
-	private int rect_x1 = 50;
-	private int rect_y0 = 200;
-	private int rect_y1 = 200;
 	
 	//======================================================== fields
     private Color _ovalColor;      // Color of oval.
@@ -78,7 +76,7 @@ class DrawingArea extends JPanel {
         		g.setColor(Color.RED);
         	    Font myFont = new Font("Serif", Font.ITALIC | Font.BOLD, 20);
         	    g.setFont(myFont);
-        	    g.drawString("Monster", 130, 70);
+        	    g.drawString(gameSystem.getGame().getPlayer().getRoom().getMonster().getName(), 130, 70);
         	}
         	
         	if(gameSystem.getGame().getPlayer().getRoom().getAllItems() != null)
@@ -86,7 +84,9 @@ class DrawingArea extends JPanel {
         		g.setColor(Color.GREEN);
         	    Font myFont = new Font("Serif", Font.ITALIC | Font.BOLD, 20);
         	    g.setFont(myFont);
-        	    g.drawString(gameSystem.getGame().getPlayer().getRoom().getAllItems(), 100, 200);
+        	    if (gameSystem.getGame().getPlayer().getRoom().numOfItems() == 1)
+        	    	g.drawString(gameSystem.getGame().getPlayer().getRoom().getAllItems(), 100, 200);
+        	    else g.drawString("*Multiple Items*", 100, 200);
         	}
         	
         	

@@ -26,7 +26,7 @@ public class Room extends ItemHolder {
     public static final String unenterable = "** You cannot enter the room - It seems to be locked!";
     
     public String description;
-    private Map<String, Room> exits;
+    private Map<Exit, Room> exits;
     private Monster monster;
     private boolean exitable;
     private boolean enterable;
@@ -41,7 +41,7 @@ public class Room extends ItemHolder {
     public Room(String description, String roomName) {
     	this.roomName = roomName;
         this.description = description;
-        exits = new HashMap<String, Room>();
+        exits = new HashMap<Exit, Room>();
         exitable = true;
         enterable = true;
         monster = null;
@@ -82,15 +82,15 @@ public class Room extends ItemHolder {
      * Define the exits of this room.  Every direction either leads
      * to another room
      */
-    public void setExits(String roomName, Room roomType) {
+    public void setExits(Exit roomName, Room roomType) {
         exits.put(roomName, roomType);
     }
     
     public Room getExitRoom(String exitString) {
-        return exits.get(exitString);
+        return exits.get(Exit.valueOf(exitString));
     }
     public Room getExitRoom(Exit exit) {
-        return exits.get(exit.toString());
+        return exits.get(exit);
     }
     
     /**
@@ -99,8 +99,8 @@ public class Room extends ItemHolder {
     public String getAllExits() {
         String allExits = new String();
         
-        for (String room : exits.keySet()){
-        	allExits = allExits + "  " + room;
+        for (Exit exitName : exits.keySet()){
+        	allExits = allExits + "  " + exitName.toString();
         }
         
         return allExits;

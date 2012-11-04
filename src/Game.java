@@ -60,14 +60,14 @@ public class Game {
         
         // initialise room exits
 
-        outside.setExits("east", theater);
-        outside.setExits("south", lab);
-        outside.setExits("west", pub);
-        theater.setExits("west", outside);
-        pub.setExits("east", outside);
-        lab.setExits("north", outside);
-        lab.setExits("east", office);
-        office.setExits("west", lab);
+        outside.setExits(Exit.east, theater);
+        outside.setExits(Exit.south, lab);
+        outside.setExits(Exit.west, pub);
+        theater.setExits(Exit.west, outside);
+        pub.setExits(Exit.east, outside);
+        lab.setExits(Exit.north, outside);
+        lab.setExits(Exit.east, office);
+        office.setExits(Exit.west, lab);
 
         outside.insertItem(new Item("GoldenKey"));
         pub.insertItem(new Weapon("Sword", 2));
@@ -86,7 +86,7 @@ public class Game {
     		Command command = parser.getUserCommand(userInput);
     		gameStatus += processGameCmd(command);
     		if(p1.inBattle()){
-    			gameStatus += Combat.FIGHT_INITIATED;
+    			gameStatus += "\nYou have encountered a " + p1.getRoom().getMonster().getName();
     		}
     	} else {
     		Combat combat = new Combat(p1, p1.getRoom().getMonster(), parser);
