@@ -70,9 +70,10 @@ public class Game {
         lab.setExits(Exit.east, office);
         office.setExits(Exit.west, lab);
 
-        outside.insertItem(new Item("GoldenKey"));
+        //outside.insertItem(new Item("GoldenKey"));
         pub.insertItem(new Weapon("Sword", 2));
         lab.insertItem(new Consumable("SmallPotion", 100));
+        theater.insertItem(new Powerup("mini_powerup", "Attack Boost: 2, Health Boost: 5", 2, 5));
         
         p1.setRoom(outside); 
         gameOver = false;

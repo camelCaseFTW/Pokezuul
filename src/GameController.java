@@ -12,6 +12,7 @@ public class GameController {
 		view.addQuitGameListener(new QuitGameListener());
 		view.addNewGameListener(new NewGameListener());
 		view.addCommandListener(new CommandListener());
+		view.addHelpGameListener(new HelpGameListener());
 	}
 
 	class CommandListener implements ActionListener {
@@ -34,6 +35,7 @@ public class GameController {
 	class NewGameListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			view.enableCommandPanel();
+			view.enableGameButtons();
 			model.newGame();
 		}
 	}
@@ -41,6 +43,13 @@ public class GameController {
 	class QuitGameListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			view.dispose();
+		}
+	}
+	
+	class HelpGameListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			view.dspMessage("\n** You clicked 'help'");
+			model.processCmd("help");
 		}
 	}
 }

@@ -197,6 +197,37 @@ public class Player extends Creature{
     	return s;
     }
 
+    public String playerApply(Command command) {
+    	String s = "";
+        Powerup powerup = null;
+        String itemName;
+        
+        if(!command.hasSecondWord()) {
+            return "Apply what?";
+        }
+        
+        itemName = command.getSecondWord();
+        for (Item item : items)
+            if (item.getName().equals(itemName)) 
+                if (item instanceof Powerup) 
+                    powerup = (Powerup)item;            
+        
+        if (powerup != null) {
+            int healthBoosted = powerup.getHPIncrease();
+            int attackBoosted = powerup.getAtkIncrease();
+            
+            attackPower += attackBoosted;
+            maxHP += healthBoosted;
+            currentHP += healthBoosted;
+            
+            s = itemName + " has boosted " + attackBoosted + " attack and  " + healthBoosted +"HP!\n";
+            s += creatureStatus();
+            removeItem(powerup);
+        } else s= "Item cannot be applied or Powerup doesn't exist!";
+    	
+    	return s;
+    }
+        
     public String playerExamine(Command command) {
         Item examine = null;
         String itemName;
@@ -250,8 +281,10 @@ public class Player extends Creature{
             temp = playerPickup(command);
         } else if (commandWord == CommandTypes.INVENTORY) { 
             temp = dspPlayerInventory();
-        } else if (commandWord == CommandTypes.USE) { 
+        } else if (commandWord == CommandTypes.CONSUME) { 
             temp = playerUse(command);
+        } else if (commandWord == CommandTypes.APPLY) { 
+            temp = playerApply(command);            
         } else if (commandWord == CommandTypes.STATUS) {
             temp = creatureStatus();
         } else if (commandWord == CommandTypes.EQUIP) {

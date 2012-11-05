@@ -22,7 +22,7 @@ class GameView extends JFrame implements GameListener {
 	private JMenuItem redoGame = new JMenuItem("Redo");
 
 	private JMenu helpMenu = new JMenu("Help");
-	private JMenuItem helpGame = new JMenuItem("Help Content");
+	private JMenuItem helpGame = new JMenuItem("Detailed Help");
 
 	private JTextField commandInput = new JTextField(25);
 	private JButton commandButton = new JButton("Process Command");
@@ -55,6 +55,7 @@ class GameView extends JFrame implements GameListener {
 		redoGame.setEnabled(false);
 		
 		helpMenu.add(helpGame);
+		helpGame.setEnabled(false);
 		
 		menuBar.add(gameMenu);
 		menuBar.add(editMenu);
@@ -118,6 +119,18 @@ class GameView extends JFrame implements GameListener {
 		commandButton.setEnabled(true);
 	}
 	
+	public void enableGameButtons() {
+		undoGame.setEnabled(true);
+		redoGame.setEnabled(true);
+		helpGame.setEnabled(true);
+	}
+	
+	public void disableGameButtons() {
+		undoGame.setEnabled(false);
+		redoGame.setEnabled(false);
+		helpGame.setEnabled(false);		
+	}
+	
 	public void disableCommandPanel() {
 		commandInput.setEditable(false);
 		commandButton.setEnabled(false);
@@ -144,6 +157,10 @@ class GameView extends JFrame implements GameListener {
 		quitGame.addActionListener(listener);
 	}
 	
+	public void addHelpGameListener(ActionListener listener) {
+		helpGame.addActionListener(listener);
+	}
+	
 	public void dspMessage(String message) {
         messageDisplayer.append(message + newline);
         messageDisplayer.setCaretPosition(messageDisplayer.getDocument().getLength());		
@@ -156,6 +173,7 @@ class GameView extends JFrame implements GameListener {
 	
 	public void endGame() {
 		disableCommandPanel();
+		disableGameButtons();
 	}
 
 	public static void main(String[] args) {
