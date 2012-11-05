@@ -1,4 +1,4 @@
 
 public enum Exit {
-	south, north, west, east, teleport
+	south, north, west, east, teleporter
 }

@@ -87,7 +87,13 @@ public class Room extends ItemHolder {
     }
     
     public Room getExitRoom(String exitString) {
-        return exits.get(Exit.valueOf(exitString));
+    	Exit exitDoor;
+    	try {
+    		exitDoor = Exit.valueOf(exitString);
+    	} catch(IllegalArgumentException e) {
+    		exitDoor = null;
+    	}
+    	return exits.get(exitDoor);
     }
     public Room getExitRoom(Exit exit) {
         return exits.get(exit);

@@ -57,7 +57,7 @@ public class Player extends Creature{
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
             return "Go where?";
-        }        
+        }
  
         String room = command.getSecondWord();
         nextRoom = currentRoom.getExitRoom(room);
@@ -189,7 +189,7 @@ public class Player extends Creature{
             else healthHealed = consume.getHealthHealed();            
             currentHP += healthHealed;
             
-            s = itemName + " has healed " + healthHealed +"HP!";
+            s = itemName + " has healed " + healthHealed +"HP!\n";
             s += creatureHP();
             removeItem(consume);
         } else s= "Item cannot be consumed or consumable doesn't exist!";

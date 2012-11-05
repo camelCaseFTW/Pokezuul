@@ -63,6 +63,7 @@ public class Game {
         outside.setExits(Exit.east, theater);
         outside.setExits(Exit.south, lab);
         outside.setExits(Exit.west, pub);
+        outside.setExits(Exit.teleporter, office);
         theater.setExits(Exit.west, outside);
         pub.setExits(Exit.east, outside);
         lab.setExits(Exit.north, outside);

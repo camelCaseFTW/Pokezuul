@@ -71,6 +71,13 @@ class DrawingArea extends JPanel {
             	drawDownArrow(g, 150, 260, 150, 250);
         		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.south).toString(), 150, 275);
         	}
+        	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.teleporter) != null)
+        	{
+            	drawTeleporter(g, 60, 190, 30, 45);
+            	g.setColor(Color.black);
+        		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.teleporter).toString(), 55, 245);
+        	}
+        	
         	if(gameSystem.getGame().getPlayer().getRoom().hasMonster())
         	{
         		g.setColor(Color.RED);
@@ -132,4 +139,9 @@ class DrawingArea extends JPanel {
         g.drawLine(x0 ,y0,x0 + 5, y1 + 5);
       
      }
+    
+    public void drawTeleporter(Graphics g, int x0, int y0, int width, int height) {
+    	g.setColor(Color.BLUE);
+    	g.drawOval(x0, y0, width, height);
+    }
 }
