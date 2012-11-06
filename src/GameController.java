@@ -18,12 +18,11 @@ public class GameController {
 	class CommandListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			String userInput = view.getUserInput();
-			try {
-				if (!(userInput.length()>0)) throw new NullPointerException();
+			if (userInput.length()>0) {
 				view.dspMessage(dspUserInput(userInput));
 				model.processCmd(userInput);
 				view.resetUserInput();
-			} catch(NullPointerException nex) {
+			} else {
 				view.showError("You did not enter a command!");
 			}
 		}
