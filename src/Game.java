@@ -20,7 +20,6 @@
  * 
  * The game processes the commands received from the parsers
  * Currently, the game handles the 'everyday' commands, and the battle commands
- * We are possibly moving all combat related things to another class
  * 
  * Author: Alok Swamy
  */
@@ -80,7 +79,7 @@ public class Game {
     }
 
     /**
-     *  Main play routine.  Loops until end of play.
+     *  processes user inputs and converts it into a command that the game can read (battle command or regular command)
      */    
     public String playGame(String userInput) {
     	String gameStatus = "";
@@ -154,6 +153,9 @@ public class Game {
     	return s;
     }
     
+    /*
+     * returns whether a game is over
+     */
     public boolean isGameOver() {
     	return gameOver;
     }

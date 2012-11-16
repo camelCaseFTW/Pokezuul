@@ -13,6 +13,7 @@ public class Consumable extends Item{
         regenHP = recoverHP;
     }
 
+    // amount of health the consumable will heal
     public int getHealthHealed() {
         return regenHP;
     }
