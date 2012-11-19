@@ -72,7 +72,7 @@ class GameView extends JFrame implements GameListener {
 		picturePanel = new JPanel();
 		commandPanel = new JPanel();
 		
-		messageDisplayer = new JTextArea(5, 30);
+		messageDisplayer = new JTextArea(8, 30);
 		messageDisplayer.setEditable(false);
 		messageDisplayer.setBorder(BorderFactory.createEtchedBorder());
 		scrollPane = new JScrollPane(messageDisplayer);
@@ -87,40 +87,26 @@ class GameView extends JFrame implements GameListener {
 		///////////////////////////////////////////////
 		drawing2D.setBackground(Color.white);
 		drawing2D.setBorder(BorderFactory.createEtchedBorder());
-		
-		drawing2D.setAlignmentX(Component.CENTER_ALIGNMENT);
-		drawing3D.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		//picturePanel.setLayout(new BoxLayout(picturePanel, BoxLayout.Y_AXIS));
+
 		picturePanel.setLayout(new GridBagLayout());
-		/*
+		
 		GridBagConstraints c = new GridBagConstraints();
 		
 		c.weightx = 1;
 		c.weighty = 1;
-		c.fill = GridBagConstraints.VERTICAL;
+		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 0;
 		c.gridy = 0;
-		c.gridheight = 2;
-		*/
-		picturePanel.add(drawing3D);
-        /*
+		
+		picturePanel.add(drawing3D, c);
+        
 		c.weightx = 0;
 		c.weighty = 0;
-		//c.fill = GridBagConstraints.VERTICAL;
 		c.gridx = 1;
 		c.gridy = 0;		
-		*/
-		picturePanel.add(drawing2D);
-        /*
-		c.gridx = 1;
-		c.gridy = 1;
-		picturePanel.add(new JPanel());
-		*/
-        //... Set window characteristics
-        //setContentPane(picturePanel);
-        //setLocationRelativeTo(null);  // Center window.
-
+		
+		picturePanel.add(drawing2D, c);
+        
 		/////////////////////////////////////////////
 		
 		mainPanel.add(picturePanel);

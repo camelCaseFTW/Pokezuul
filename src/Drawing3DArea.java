@@ -22,6 +22,7 @@ public class Drawing3DArea extends JPanel {
 	Drawing3DArea(GameSystem g) {
 		game = g;
 		setPreferredSize(new Dimension(320, 320));
+		setMinimumSize(new Dimension(320,320));
 		setBackground(Color.white);
 		setBorder(BorderFactory.createEtchedBorder());
 	}

@@ -23,6 +23,7 @@ class DrawingArea extends JPanel {
     public DrawingArea(GameSystem game) {
         _ovalColor = Color.black;  // Initial color.
         setPreferredSize(new Dimension(320,320));
+        this.setMinimumSize(new Dimension(320,320));
         gameSystem = game;
     }
 
