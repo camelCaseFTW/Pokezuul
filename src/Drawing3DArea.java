@@ -17,15 +17,21 @@ public class Drawing3DArea extends JPanel {
 	private final static BasicStroke DEFAULT_STROKE = new BasicStroke();
 	private final static BasicStroke BOLD_STROKE = new BasicStroke(3);
 	
-	private GameSystem game;
+	private static GameSystem game;
 	
 	Drawing3DArea(GameSystem g) {
 		game = g;
 		setPreferredSize(new Dimension(320, 320));
 		setBackground(Color.white);
 		setBorder(BorderFactory.createEtchedBorder());
+		this.addMouseListener(new MyMouseListener());
 	}
 	
+	public static GameSystem getGameSystem()
+	{
+		return game;
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
