@@ -13,6 +13,7 @@ public class GameController {
 		view.addNewGameListener(new NewGameListener());
 		view.addCommandListener(new CommandListener());
 		view.addHelpGameListener(new HelpGameListener());
+		view.addDrawingMouseListener(new DrawingMouseListener());
 	}
 
 	class CommandListener implements ActionListener {
@@ -49,6 +50,63 @@ public class GameController {
 		public void actionPerformed(ActionEvent e) {
 			view.dspMessage("\n** You clicked 'help'");
 			model.processCmd("help");
+		}
+	}
+	
+	class DrawingMouseListener implements MouseListener {
+
+		@Override
+		public void mouseClicked(MouseEvent eve) {
+
+			int x = 320;
+			int y = 320;
+			
+			int xClicked = eve.getX();
+			int yClicked = eve.getY();
+			
+			System.out.println("X: "+ xClicked);
+			System.out.println("Y: "+ yClicked);
+		
+			if( xClicked > x/9 && xClicked < x*2/9 && yClicked > y/2 && yClicked < y*7/9 && model.getGame().getPlayer().getRoom().getExitRoom(Exit.west) != null)
+			{
+				model.processCmd("go west");
+			}
+			else if( xClicked > x*7/9 && xClicked < x*8/9 && yClicked > y/2 && yClicked < y*7/9 && model.getGame().getPlayer().getRoom().getExitRoom(Exit.east) != null)
+			{
+				model.processCmd("go east");
+			}
+			else if( xClicked > x*4/9 && xClicked < x*5/9 && yClicked > y/2 && yClicked < y*2/3 && model.getGame().getPlayer().getRoom().getExitRoom(Exit.north) != null)
+			{
+				model.processCmd("go north");
+			}
+			else if( xClicked > x*7/18 && xClicked < x*11/18 && yClicked > y*13/18 && yClicked < y && model.getGame().getPlayer().getRoom().getExitRoom(Exit.south) != null)
+			{
+				model.processCmd("go south");
+			}
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 }

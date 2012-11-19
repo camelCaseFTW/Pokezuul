@@ -25,8 +25,8 @@ class GameView extends JFrame implements GameListener {
 	private JMenu helpMenu = new JMenu("Help");
 	private JMenuItem helpGame = new JMenuItem("Detailed Help");
 
-	private static JTextField commandInput = new JTextField(25);
-	private static JButton commandButton = new JButton("Process Command");
+	private JTextField commandInput = new JTextField(25);
+	private JButton commandButton = new JButton("Process Command");
 
 	private JPanel mainPanel;
 	private JPanel picturePanel;
@@ -174,8 +174,8 @@ class GameView extends JFrame implements GameListener {
 		helpGame.addActionListener(listener);
 	}
 	
-	public void addWindowListener(WindowListener listener) {
-		
+	public void addDrawingMouseListener(MouseListener listener) {
+		drawing3D.addMouseListener(listener);
 	}
 	
 	public void dspMessage(String message) {
@@ -204,11 +204,5 @@ class GameView extends JFrame implements GameListener {
 		
 		v.setVisible(true);
 		v.setLocationRelativeTo(null);
-	}
-
-	public static void setCommandInput(String string) {
-		commandInput.setText(string);
-		commandButton.doClick();
-		
 	}
 }
