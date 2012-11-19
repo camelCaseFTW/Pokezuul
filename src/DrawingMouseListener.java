@@ -2,7 +2,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 
-public class MyMouseListener implements MouseListener {
+public class DrawingMouseListener implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent eve) {

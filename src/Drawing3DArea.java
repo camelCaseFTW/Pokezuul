@@ -25,7 +25,7 @@ public class Drawing3DArea extends JPanel {
 		setMinimumSize(new Dimension(320,320));
 		setBackground(Color.white);
 		setBorder(BorderFactory.createEtchedBorder());
-		this.addMouseListener(new MyMouseListener());
+		this.addMouseListener(new DrawingMouseListener());
 	}
 	
 	public static GameSystem getGameSystem()
