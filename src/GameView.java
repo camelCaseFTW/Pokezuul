@@ -1,4 +1,5 @@
 import java.awt.*;
+
 import javax.swing.*;
 
 import java.awt.event.*;
@@ -36,12 +37,14 @@ class GameView extends JFrame implements GameListener {
 	
 	private GameSystem game_model;
 
-	private DrawingArea drawing;
-    
+	private DrawingArea drawing2D;
+	private Drawing3DArea drawing3D;
+	
 	public GameView(GameSystem g) {
 		
 		game_model = g;
-		drawing = new DrawingArea(game_model);
+		drawing2D = new DrawingArea(game_model);
+		drawing3D = new Drawing3DArea(game_model);
 		
 		gameMenu.add(newGame);
 		gameMenu.add(saveGame);
@@ -66,7 +69,7 @@ class GameView extends JFrame implements GameListener {
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		
 
-		picturePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		picturePanel = new JPanel();
 		commandPanel = new JPanel();
 		
 		messageDisplayer = new JTextArea(5, 30);
@@ -82,17 +85,42 @@ class GameView extends JFrame implements GameListener {
 		commandButton.setEnabled(false);
 
 		///////////////////////////////////////////////
-		drawing.setBackground(Color.white);
-		picturePanel.setLayout(new BorderLayout(5, 5));
-        picturePanel.add(drawing, BorderLayout.WEST);
-        
-         //... Set window characteristics
-        setContentPane(picturePanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Demo Drawing");
-        setLocationRelativeTo(null);  // Center window.
-        pack();
-			
+		drawing2D.setBackground(Color.white);
+		drawing2D.setBorder(BorderFactory.createEtchedBorder());
+		
+		drawing2D.setAlignmentX(Component.CENTER_ALIGNMENT);
+		drawing3D.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		//picturePanel.setLayout(new BoxLayout(picturePanel, BoxLayout.Y_AXIS));
+		picturePanel.setLayout(new GridBagLayout());
+		/*
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.VERTICAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridheight = 2;
+		*/
+		picturePanel.add(drawing3D);
+        /*
+		c.weightx = 0;
+		c.weighty = 0;
+		//c.fill = GridBagConstraints.VERTICAL;
+		c.gridx = 1;
+		c.gridy = 0;		
+		*/
+		picturePanel.add(drawing2D);
+        /*
+		c.gridx = 1;
+		c.gridy = 1;
+		picturePanel.add(new JPanel());
+		*/
+        //... Set window characteristics
+        //setContentPane(picturePanel);
+        //setLocationRelativeTo(null);  // Center window.
+
 		/////////////////////////////////////////////
 		
 		mainPanel.add(picturePanel);
@@ -105,9 +133,8 @@ class GameView extends JFrame implements GameListener {
 		this.pack();
 		this.setTitle("Zuul");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//this.setResizable(false);
 		dspMessage("Game > New Game to begin your adventure!");
-		
-		
 	}
 
 	public String getUserInput() {
@@ -161,13 +188,17 @@ class GameView extends JFrame implements GameListener {
 		helpGame.addActionListener(listener);
 	}
 	
+	public void addWindowListener(WindowListener listener) {
+		
+	}
+	
 	public void dspMessage(String message) {
         messageDisplayer.append(message + newline);
         messageDisplayer.setCaretPosition(messageDisplayer.getDocument().getLength());		
 	}
 	
 	public void commandProcessed(GameEvent e) {
-		this.drawing.repaint();
+		this.drawing2D.repaint();
 		dspMessage(e.getGameStatus());
 	}
 	
@@ -185,5 +216,6 @@ class GameView extends JFrame implements GameListener {
 		GameController c = new GameController(v, g);
 		
 		v.setVisible(true);
+		v.setLocationRelativeTo(null);
 	}
 }

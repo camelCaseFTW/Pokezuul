@@ -14,10 +14,7 @@ class DrawingArea extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private Room room;
-	protected int diameter=12;
-	protected int radius=diameter/2;
-	protected double mlength=0;
-	
+
 	//======================================================== fields
     private Color _ovalColor;      // Color of oval.
     private GameSystem gameSystem;
@@ -37,7 +34,7 @@ class DrawingArea extends JPanel {
         
         
                 
-        if(gameSystem.getGame() != null )
+        if(gameSystem.gameRunning())
         {
         	g.drawRect(50,50,200,200);
         	room = gameSystem.getGame().getPlayer().getRoom();
