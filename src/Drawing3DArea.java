@@ -57,24 +57,32 @@ public class Drawing3DArea extends JPanel {
 			g2D.setStroke(DEFAULT_STROKE);
 			g2D.setColor(DEFAULT_COLOR);
 			
-			g2D.drawLine(componentWidth/9, componentHeight*8/9, componentWidth/9, componentHeight/2);
-			g2D.drawLine(componentWidth*2/9, componentHeight*7/9, componentWidth*2/9, componentHeight/2);
-			g2D.drawLine(componentWidth/9, componentHeight/2, componentWidth*2/9, componentHeight/2);
-		
-			g2D.drawLine(componentWidth*4/9, componentHeight*2/3, componentWidth*4/9, componentHeight/2);
-			g2D.drawLine(componentWidth*5/9, componentHeight*2/3, componentWidth*5/9, componentHeight/2);
-			g2D.drawLine(componentWidth*4/9, componentHeight/2, componentWidth*5/9, componentHeight/2);
-		
-			g2D.drawLine(componentWidth*8/9, componentHeight*8/9, componentWidth*8/9, componentHeight/2);
-			g2D.drawLine(componentWidth*7/9, componentHeight*7/9, componentWidth*7/9, componentHeight/2);
-			g2D.drawLine(componentWidth*7/9, componentHeight/2, componentWidth*8/9, componentHeight/2);		
-		
-			g2D.setStroke(DASHED_STROKE);
-			g2D.drawLine(componentWidth*7/18, componentHeight, componentWidth*7/18, componentHeight*13/18);
-			g2D.drawLine(componentWidth*11/18, componentHeight, componentWidth*11/18, componentHeight*13/18);
-			g2D.drawLine(componentWidth*7/18, componentHeight*13/18, componentWidth*11/18, componentHeight*13/18);
+        	if(game.getGame().getPlayer().getRoom().getExitRoom(Exit.west) != null) {
+        		g2D.drawLine(componentWidth/9, componentHeight*8/9, componentWidth/9, componentHeight/2);
+        		g2D.drawLine(componentWidth*2/9, componentHeight*7/9, componentWidth*2/9, componentHeight/2);
+        		g2D.drawLine(componentWidth/9, componentHeight/2, componentWidth*2/9, componentHeight/2);
+        	}
+        	if(game.getGame().getPlayer().getRoom().getExitRoom(Exit.north) != null)
+        	{
+        		g2D.drawLine(componentWidth*4/9, componentHeight*2/3, componentWidth*4/9, componentHeight/2);
+        		g2D.drawLine(componentWidth*5/9, componentHeight*2/3, componentWidth*5/9, componentHeight/2);
+        		g2D.drawLine(componentWidth*4/9, componentHeight/2, componentWidth*5/9, componentHeight/2);
+        	}
+        	if(game.getGame().getPlayer().getRoom().getExitRoom(Exit.east) != null)
+        	{
+        		g2D.drawLine(componentWidth*8/9, componentHeight*8/9, componentWidth*8/9, componentHeight/2);
+        		g2D.drawLine(componentWidth*7/9, componentHeight*7/9, componentWidth*7/9, componentHeight/2);
+        		g2D.drawLine(componentWidth*7/9, componentHeight/2, componentWidth*8/9, componentHeight/2);		
+        	}
+        	if(game.getGame().getPlayer().getRoom().getExitRoom(Exit.south) != null)
+        	{
+        		g2D.setStroke(DASHED_STROKE);
+        		g2D.drawLine(componentWidth*7/18, componentHeight, componentWidth*7/18, componentHeight*13/18);
+        		g2D.drawLine(componentWidth*11/18, componentHeight, componentWidth*11/18, componentHeight*13/18);
+        		g2D.drawLine(componentWidth*7/18, componentHeight*13/18, componentWidth*11/18, componentHeight*13/18);
 			
 			g2D.setStroke(DEFAULT_STROKE);
-		}
+        	}
+        	}
 	}
 }

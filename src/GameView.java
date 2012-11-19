@@ -199,6 +199,7 @@ class GameView extends JFrame implements GameListener {
 	
 	public void commandProcessed(GameEvent e) {
 		this.drawing2D.repaint();
+		this.drawing3D.repaint();
 		dspMessage(e.getGameStatus());
 	}
 	
