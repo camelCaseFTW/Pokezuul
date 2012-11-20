@@ -11,6 +11,8 @@ class GameView extends JFrame implements GameListener {
 	private static final String newline = "\n";
 	
 	private JMenuBar menuBar = new JMenuBar();
+	JScrollPane listScroller;
+	JList<String> list;
 	
 	private JMenu gameMenu = new JMenu("Game");
 	private JMenuItem newGame = new JMenuItem("New Game");
@@ -26,6 +28,11 @@ class GameView extends JFrame implements GameListener {
 	private JMenuItem helpGame = new JMenuItem("Detailed Help");
 
 	private JTextField commandInput = new JTextField(25);
+	
+	public void setCommandInput(String commandInput) {
+		this.commandInput.setText(commandInput);
+	}
+
 	private JButton commandButton = new JButton("Process Command");
 
 	private JPanel mainPanel;
@@ -45,6 +52,19 @@ class GameView extends JFrame implements GameListener {
 		game_model = g;
 		drawing2D = new DrawingArea(game_model);
 		drawing3D = new Drawing3DArea(game_model);
+		
+		////////////////////////////////////////////////
+		
+		/*String[] entries = { "Entry 1", "Entry 2", "Entry 3", "Entry 4", "Entry 5", "Entry 6" };
+		list = new JList<String>(entries);
+		//list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		//list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		list.setVisibleRowCount(-1);
+		listScroller = new JScrollPane(list);
+		listScroller.setPreferredSize(new Dimension(20, 20));
+		add(listScroller);
+		*/
+		///////////////////////////////////////////////////
 		
 		gameMenu.add(newGame);
 		gameMenu.add(saveGame);

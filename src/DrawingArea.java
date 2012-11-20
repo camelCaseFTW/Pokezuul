@@ -4,6 +4,11 @@
 // Author : Fred Swartz - 21 Sept 2006 - Placed in public domain.
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.*;
 
 
@@ -14,6 +19,12 @@ class DrawingArea extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private Room room;
+	private JButton button;
+	private JList<String> list;
+	private JScrollPane listScroller = new JScrollPane();
+	private boolean showList = true;
+	private JFrame frame;
+	private String inventory; 
 
 	//======================================================== fields
     private Color _ovalColor;      // Color of oval.
@@ -25,6 +36,78 @@ class DrawingArea extends JPanel {
         setPreferredSize(new Dimension(320,320));
         this.setMinimumSize(new Dimension(320,320));
         gameSystem = game;
+        button = new JButton("Inventory");
+        
+        add(button);
+        button.addActionListener( new ActionListener() {
+			
+          public void actionPerformed(ActionEvent e)
+       	  {
+
+        	  	
+       		  	if(showList == true)
+       		  	{
+       		  		java.util.List<Item> items= GameController.getGameSystem().getGame().getPlayer().items;
+       		  		String[] entries = new String[10];
+       		  		int i = 0;
+       		  		for(Item item: items)
+       		  		{
+       		  			entries[i] = item.getName();
+       		  			i++;
+       		  		}
+       		  		list = new JList<String>(entries);
+       			
+       		  		list.setVisible(true);
+       		  		list.addMouseListener(new MouseListener() {
+						
+       		  			@Override
+						public void mouseClicked(MouseEvent arg0) {
+														
+							GameController.getGameView().setCommandInput(list.getSelectedValue());
+						}
+
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void mouseExited(MouseEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void mousePressed(MouseEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void mouseReleased(MouseEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+       		  		frame = new JFrame();
+       		  		frame.setSize(200, 300);
+       		  		frame.add(list);
+       		  		frame.setVisible(true);
+       		  		showList = false;
+       		  	}
+       		  	else 
+       		  	{
+       		  		showList = true;
+       		  		frame.setVisible(false);
+       		  		frame.dispose();
+       		  		GameController.getGameView().setCommandInput("");
+       		  	}
+       			
+       	    
+
+       	  }
+		});
     }
 
     //================================================ paintComponent
@@ -32,7 +115,8 @@ class DrawingArea extends JPanel {
         super.paintComponent(g);  // Ask parent to paint background.
 
         g.setColor(_ovalColor);
-        
+        ///////////////////////////////////////////////////////////////
+	
         
                 
         if(gameSystem.gameRunning())
@@ -142,4 +226,7 @@ class DrawingArea extends JPanel {
     	g.setColor(Color.BLUE);
     	g.drawOval(x0, y0, width, height);
     }
+    
+              
+    	 
 }

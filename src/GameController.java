@@ -1,9 +1,13 @@
+import java.awt.Dimension;
 import java.awt.event.*;
+
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 public class GameController {
 	
-	protected GameSystem model;
-	protected GameView view;
+	protected static GameSystem model;
+	protected static GameView view;
 	
 	GameController(GameView v, GameSystem g) {
 		model = g;
@@ -14,6 +18,17 @@ public class GameController {
 		view.addCommandListener(new CommandListener());
 		view.addHelpGameListener(new HelpGameListener());
 		view.addDrawingMouseListener(new DrawingMouseListener());
+		
+	}
+	
+	public static GameSystem getGameSystem()
+	{
+		return model;
+	}
+	
+	public static GameView getGameView()
+	{
+		return view;
 	}
 
 	class CommandListener implements ActionListener {
