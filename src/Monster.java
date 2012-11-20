@@ -10,12 +10,20 @@
 
 public class Monster extends Creature{
     
+	private static final int DEFAULT_ATK = 10;
+	private static final int DEFAULT_RANGE = 1;
+	private static final int DEFAULT_MAXHP = 10;
+	
     public Monster(String name) {
-        this.name = name;
-        attackPower = 10;
-        damageRange = 1; // the mosnter does a damage of 3 +/- 1
-        maxHP = 8;
-        currentHP = 8;
+        this(name, DEFAULT_ATK, DEFAULT_RANGE, DEFAULT_MAXHP, DEFAULT_MAXHP);
+    }
+    
+    public Monster(String name, int attackPower, int damageRange, int maxHP, int currentHP) {
+    	this.name = name;
+    	this.attackPower = attackPower;
+    	this.damageRange = damageRange;   // the mosnter does a damage of 3 +/- 1
+    	this.maxHP = maxHP;
+    	this.currentHP = currentHP;
     }
     
     public String creatureStatus() {

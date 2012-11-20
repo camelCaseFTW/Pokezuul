@@ -10,8 +10,6 @@ public class Item {
 	
     protected String itemName;
     protected String itemDescription;
-    // Item weight was temporarily removed because it has no use currently in the game
-    //protected int itemWeight;
 
     public Item(String name, String description){
     	itemName = name;
@@ -33,11 +31,7 @@ public class Item {
     public String getDescription() {
         return itemDescription;
     }
-    /*
-    public int getWeight() {
-        return itemWeight;
-    }
-    */
+
     public void setName (String s) {
         itemName = s;
     }
@@ -45,12 +39,24 @@ public class Item {
     public void setDescriptiong(String s) {
         itemDescription = s;
     }
-    /*
-    public void setWeight(int i) {
-        itemWeight = i;
-    }
-    */
+
     public String toString() {
         return itemName;
+    }
+    
+    /**
+     * This method is to overwrite the equals method of the super class,
+     * it returns true, if this Item is the same Object as obj
+     * or if the ItemNames are the same, ignoring the case
+     * @param Object
+     * @return boolean
+     * @author Ehsan Karami
+     */
+    public boolean equals(Object obj)
+    {
+    	if( !(obj instanceof Item) ) return false;
+    	if(this == obj) return true;
+    	Item itm = (Item)obj;
+    	return this.getName().equalsIgnoreCase(itm.getName());
     }
 }

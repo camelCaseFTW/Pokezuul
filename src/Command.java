@@ -27,52 +27,44 @@ public class Command
     private CommandTypes commandWord;
     private String secondWord;
 
-    /**
-     * Create a command object. First and second word must be supplied, but
-     * either one (or both) can be null.
-     * @param firstWord The first word of the command. Null if the command
-     *                  was not recognised.
-     * @param secondWord The second word of the command.
-     */
+    // Command that has 2 words, one is a command enum, other is a string
     public Command(CommandTypes firstWord, String secondWord)
     {
         this.commandWord = firstWord;
         this.secondWord = secondWord;
     }
 
-    /**
-     * Return the command word (the first word) of this command. If the
-     * command was not understood, the result is null.
-     * @return The command word.
-     */
+    // returns the enum type
     public CommandTypes getCommandWord()
     {
         return commandWord;
     }
 
-    /**
-     * @return The second word of this command. Returns null if there was no
-     * second word.
-     */
+    // returns the object being affected by the enum 
     public String getSecondWord()
     {
         return secondWord;
     }
 
-    /**
-     * @return true if this command was not understood.
-     */
+    // if command type is unknown, use UNKNOWN enum
     public boolean isUnknown()
     {
         return (commandWord == CommandTypes.UNKNOWN);
     }
 
-    /**
-     * @return true if the command has a second word.
-     */
+    // returns the second word
     public boolean hasSecondWord()
     {
         return (secondWord != null);
+    }
+    /**
+     * Changes the second word of the command to word;
+     * @param word
+     * @author Ehsan Karami
+     */
+    public void setSecondWord(String word)
+    {
+    	secondWord = word;
     }
 }
 

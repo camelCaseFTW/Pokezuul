@@ -1,19 +1,8 @@
-import java.util.HashMap;
 /**
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
- * 
- * This class holds an enumeration of all command words known to the game.
- * It is used to recognise commands as they are typed in.
- *
- * @author  Michael Kölling and David J. Barnes
- * @version 2011.07.31
+ * A class that contains the list of battle commands, and regular commands ( and their string representations)
  */
 
-/**
- * Pretty much the same as the CommandWords in Zuul-better-version2
- * author: Alok Swamy
- */
+import java.util.HashMap;
 
 public class CommandWords
 {
@@ -38,31 +27,26 @@ public class CommandWords
                 validBattleCommands.put(bCommand.toString(), bCommand);   
     }
 
-    /**
-     * Find the CommandType associated with a command word.
-     * @param commandWord The word to look up.
-     * @return The CommandType correspondng to commandWord, or UNKNOWN
-     *         if it is not a valid command word.
-     */
+    // returns the command type from string
     public CommandTypes getCommandWord(String commandWord) {
         CommandTypes command = validCommands.get(commandWord);
         if(command != null) return command;
         else return CommandTypes.UNKNOWN;
     }
 
+    // returnst the battlecommand type from string
     public BattleCommandTypes getBattleCommandWord(String bCommandWord) {
         BattleCommandTypes bCommand = validBattleCommands.get(bCommandWord);
         if(bCommand != null) return bCommand;
         else return BattleCommandTypes.UNKNOWN;
     }
     
-    /**
-     * checks to see if its a valid command
-     */
+    // checks to see if its a regular command
     public boolean isCommand(String aString) {
         return validCommands.containsKey(aString);
     }
     
+    //checks to see if its a battle command
     public boolean isBattleCommand(String aString) {
     	return validBattleCommands.containsKey(aString);
     }

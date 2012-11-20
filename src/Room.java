@@ -26,10 +26,11 @@ public class Room extends ItemHolder {
     public static final String unenterable = "** You cannot enter the room - It seems to be locked!";
     
     public String description;
-    private Map<String, Room> exits;
+    private Map<Exit, Room> exits;
     private Monster monster;
     private boolean exitable;
     private boolean enterable;
+    private String roomName;
     
     /**
      * Create a room described "description". Initially, it has
@@ -37,15 +38,24 @@ public class Room extends ItemHolder {
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) {
+    public Room(String description, String roomName) {
+    	this.roomName = roomName;
         this.description = description;
-        exits = new HashMap<String, Room>();
+        exits = new HashMap<Exit, Room>();
         exitable = true;
         enterable = true;
         monster = null;
     }
 
-    public boolean hasMonster() {
+    public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	public boolean hasMonster() {
         if(!(monster==null)) return true;
         return false;
     }
@@ -72,12 +82,21 @@ public class Room extends ItemHolder {
      * Define the exits of this room.  Every direction either leads
      * to another room
      */
-    public void setExits(String roomName, Room roomType) {
+    public void setExits(Exit roomName, Room roomType) {
         exits.put(roomName, roomType);
     }
     
     public Room getExitRoom(String exitString) {
-        return exits.get(exitString);
+    	Exit exitDoor;
+    	try {
+    		exitDoor = Exit.valueOf(exitString);
+    	} catch(IllegalArgumentException e) {
+    		exitDoor = null;
+    	}
+    	return exits.get(exitDoor);
+    }
+    public Room getExitRoom(Exit exit) {
+        return exits.get(exit);
     }
     
     /**
@@ -86,8 +105,8 @@ public class Room extends ItemHolder {
     public String getAllExits() {
         String allExits = new String();
         
-        for (String room : exits.keySet()){
-        	allExits = allExits + "  " + room;
+        for (Exit exitName : exits.keySet()){
+        	allExits = allExits + "  " + exitName.toString();
         }
         
         return allExits;
@@ -119,6 +138,10 @@ public class Room extends ItemHolder {
     public String getDescription()
     {
         return description;
+    }
+    public String toString()
+    {
+    	return this.roomName;
     }
 
 }

@@ -9,16 +9,24 @@ import java.util.*;
  */
 public class Player extends Creature{
 		
+	private static final String PLAYER_NAME = "Player";
+	
     private Room currentRoom;
     private Stack<Room> steps;
     
     protected int bonusAttack; // this attribute tells how much power the equipped item is giving the player
     private Weapon equippedItem;
     
+    private Stack<Command> moves; //Keeps track of the Commands that can be undone,
+    private Stack<Command> undoMoves;// for redo purposes;
+    
     public Player() {
-        name = "Player";
+        name = PLAYER_NAME;
         currentRoom = null;
         steps = new Stack<Room>();
+        moves = new Stack<Command>();
+        undoMoves = new Stack<Command>();
+
         attackPower = 5;
         bonusAttack = 0;
         damageRange = 2;
@@ -47,7 +55,7 @@ public class Player extends Creature{
      * goRoom allows the user to travel from room to room, but also keeps a log of where he/she has been
      * 'go back' typed in the user input will allow him to return to the previous room (like an UNDO)
      * 
-     * Undo portion is written entirely by Eshan
+     * Undo portion is written entirely by Ehsan
      */
     
     public String playerMove(Command command) {
@@ -57,7 +65,7 @@ public class Player extends Creature{
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
             return "Go where?";
-        }        
+        }
  
         String room = command.getSecondWord();
         nextRoom = currentRoom.getExitRoom(room);
@@ -118,7 +126,7 @@ public class Player extends Creature{
         String itemName = command.getSecondWord();
         
         for (Item item : currentRoom.getItemList())
-            if (item.getName().equals(itemName))
+            if (item.getName().equalsIgnoreCase(itemName)) // changing equals() to equalsIgnoreCase() to make the game easier. E.K
                 removingItem = item;
             
         if (!(removingItem==null)) {
@@ -126,6 +134,30 @@ public class Player extends Creature{
             insertItem(removingItem);
             return removingItem + " has been picked up";
         } else return "Item doesn't exist";
+   }
+   /**
+    * This method is the reverse of playerPickup()
+    * it drops an Item in to the currentRoom 
+    * @param command
+    * @return String results
+    * @author Ehsan Karami 
+    */
+   public String playerDrop (Command command) { // For undo purposes, E.K
+        Item removingItem = null;
+        if(!command.hasSecondWord())
+        	return "Drop what?";
+        String itemName = command.getSecondWord();        
+        /*for (Item item : this.getItemList())
+            if (item.getName().equalsIgnoreCase(itemName)) // changing equals() to equalsIgnoreCase() to make the game easier. E.K
+                removingItem = item;
+          */ // using the items equals method; E.K
+        if(this.getItemList().contains(new Item(itemName)))
+        	removingItem = getItemList().get(getItemList().indexOf(new Item(itemName)));
+        if (!(removingItem==null)) {
+            this.removeItem(removingItem);
+            currentRoom.insertItem(removingItem);
+            return removingItem + " has been droped";
+        } else return "You are not carrying a " + itemName;
    }
 
     public String dspPlayerInventory() {
@@ -189,7 +221,7 @@ public class Player extends Creature{
             else healthHealed = consume.getHealthHealed();            
             currentHP += healthHealed;
             
-            s = itemName + " has healed " + healthHealed +"HP!";
+            s = itemName + " has healed " + healthHealed +"HP!\n";
             s += creatureHP();
             removeItem(consume);
         } else s= "Item cannot be consumed or consumable doesn't exist!";
@@ -197,6 +229,71 @@ public class Player extends Creature{
     	return s;
     }
 
+    public String playerApply(Command command) {
+    	String s = "";
+        Powerup powerup = null;
+        String itemName;
+        
+        if(!command.hasSecondWord()) {
+            return "Apply what?";
+        }
+        
+        itemName = command.getSecondWord();
+        for (Item item : items)
+            if (item.getName().equals(itemName)) 
+                if (item instanceof Powerup) 
+                    powerup = (Powerup)item;            
+        
+        if (powerup != null) {
+            int healthBoosted = powerup.getHPIncrease();
+            int attackBoosted = powerup.getAtkIncrease();
+            
+            attackPower += attackBoosted;
+            maxHP += healthBoosted;
+            currentHP += healthBoosted;
+            
+            s = itemName + " has boosted " + attackBoosted + " attack and  " + healthBoosted +"HP!\n";
+            s += creatureStatus();
+            removeItem(powerup);
+        } else s= "Item cannot be applied or Powerup doesn't exist!";
+    	
+    	return s;
+    }
+    /**
+     * this method is the reverse of the apply method
+     * @param command
+     * @return String results
+     * @author Ehsan Karami
+     */
+    public String playerUndoApply(Command command) {
+    	String s = "";
+        Powerup powerup = null;
+        Item itm;
+        
+        if(!command.hasSecondWord()) {
+            return "Apply what?";
+        }
+        
+        itm = new Item(command.getSecondWord());
+        if(removedItems.contains(itm))
+        {
+            Item item = removedItems.get(removedItems.indexOf(itm)); 
+            if (item instanceof Powerup) 
+                powerup = (Powerup)item;            
+        }
+        if (powerup != null) {
+            attackPower -= powerup.getAtkIncrease();
+            maxHP -= powerup.getHPIncrease();
+            currentHP -= powerup.getHPIncrease();
+            
+            s = itm.getName() + " has returned to your inventory and your attack reduced by " + powerup.getAtkIncrease() + " and your HP reduced by  " + powerup.getHPIncrease() +"!\n";
+            s += creatureStatus();
+            this.insertItem(powerup);
+        } else s= "Item was not found or was not applied";
+    	
+    	return s;
+    }
+        
     public String playerExamine(Command command) {
         Item examine = null;
         String itemName;
@@ -243,26 +340,111 @@ public class Player extends Creature{
     public String processPlayerCmd(Command command) {
     	String temp = "";
     	CommandTypes commandWord = command.getCommandWord();
+    	boolean canUndo = false; // E.K
     	
         if (commandWord == CommandTypes.LOOK) {
             temp = playerLook();
         } else if (commandWord == CommandTypes.PICKUP) {
             temp = playerPickup(command);
+        	canUndo = true;
         } else if (commandWord == CommandTypes.INVENTORY) { 
             temp = dspPlayerInventory();
-        } else if (commandWord == CommandTypes.USE) { 
+        } else if (commandWord == CommandTypes.CONSUME) { 
             temp = playerUse(command);
+        } else if (commandWord == CommandTypes.APPLY) { 
+            temp = playerApply(command);
+        	canUndo = true;
         } else if (commandWord == CommandTypes.STATUS) {
             temp = creatureStatus();
         } else if (commandWord == CommandTypes.EQUIP) {
             temp = playerEquip(command);
+        	canUndo = true;
         } else if (commandWord == CommandTypes.DEEQUIP) {
-            temp = playerDeequip();
+        	if(equippedItem != null) // E.K
+        	{
+        		command.setSecondWord(equippedItem.getName());
+        		temp = playerDeequip();
+        		canUndo = true;
+        	}
+        	else temp = "You dont have anything to deequip";
         } else if (commandWord == CommandTypes.EXAMINE) {
             temp = playerExamine(command);
         } else if (commandWord == CommandTypes.GO) {
         	temp = playerMove(command);
+        	canUndo = true;
+        } else if (commandWord == CommandTypes.UNDO)
+        	temp = undo();
+        else if (commandWord == CommandTypes.REDO)
+        	temp = redo();
+        if(canUndo)
+        {
+        	moves.push(command);
+        	undoMoves.clear();
         }
+        
+    	return temp;
+    }
+    
+    public String undo()
+    {
+    	if(moves.empty()) return "There is nothing to Undo.";
+    	String temp = "";
+    	Command cmd = moves.pop();
+    	switch(cmd.getCommandWord())
+    	{
+    	case APPLY:
+			temp = playerUndoApply(cmd);
+			break;
+    	case GO:
+    		temp = playerMove(new Command(CommandTypes.GO, "back"));
+    		break;
+    	case EQUIP:
+    		temp = playerDeequip();
+    		break;
+    	case DEEQUIP:
+    		temp = playerEquip(cmd);
+    		break;
+    	case PICKUP:
+    		temp = playerDrop(cmd);
+    		break;
+    	default: 
+    		temp = "Cannot Undo!";
+    		break;
+    	}
+    	undoMoves.push(cmd);
+    	
+    	return temp;
+    }
+    
+    public String redo()
+    {
+    	if(undoMoves.empty()) return "There is nothing to Redo.";
+    	String temp = "";
+    	Command cmd = undoMoves.pop();
+    	switch(cmd.getCommandWord())
+    	{
+    	case APPLY:
+			temp = playerApply(cmd);
+			break;
+    	case GO:
+    		temp = playerMove(cmd);
+    		break;
+    	case EQUIP:
+    		temp = playerEquip(cmd);
+    		break;
+    	case DEEQUIP:
+    		temp = playerDeequip();
+    		break;
+    	case PICKUP:
+    		temp = playerPickup(cmd);
+    		break;
+    	default: 
+    		temp = "Cannot Redo!";
+    		break;
+    	}
+    	
+    	moves.push(cmd);
+    	
     	return temp;
     }
     

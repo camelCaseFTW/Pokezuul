@@ -20,7 +20,6 @@
  * 
  * The game processes the commands received from the parsers
  * Currently, the game handles the 'everyday' commands, and the battle commands
- * We are possibly moving all combat related things to another class
  * 
  * Author: Alok Swamy
  */
@@ -50,35 +49,37 @@ public class Game {
         Room outside, theater, pub, lab, office;
         
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
+        outside = new Room("outside the main entrance of the university", "Outside");
+        theater = new Room("in a lecture theater", "Theater");
         theater.spawnMonster(new Monster("Vampire"));
         theater.getMonster().insertItem(new Weapon("SuperSword", 3));
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        pub = new Room("in the campus pub", "Pub");
+        lab = new Room("in a computing lab", "Lab");
+        office = new Room("in the computing admin office", "Office");
         
         // initialise room exits
 
-        outside.setExits("east", theater);
-        outside.setExits("south", lab);
-        outside.setExits("west", pub);
-        theater.setExits("west", outside);
-        pub.setExits("east", outside);
-        lab.setExits("north", outside);
-        lab.setExits("east", office);
-        office.setExits("west", lab);
+        outside.setExits(Exit.east, theater);
+        outside.setExits(Exit.south, lab);
+        outside.setExits(Exit.west, pub);
+        outside.setExits(Exit.teleporter, office);
+        theater.setExits(Exit.west, outside);
+        pub.setExits(Exit.east, outside);
+        lab.setExits(Exit.north, outside);
+        lab.setExits(Exit.east, office);
+        office.setExits(Exit.west, lab);
 
-        outside.insertItem(new Item("GoldenKey"));
+        //outside.insertItem(new Item("GoldenKey"));
         pub.insertItem(new Weapon("Sword", 2));
         lab.insertItem(new Consumable("SmallPotion", 100));
+        theater.insertItem(new Powerup("mini_powerup", "Attack Boost: 2, Health Boost: 5", 2, 5));
         
         p1.setRoom(outside); 
         gameOver = false;
     }
 
     /**
-     *  Main play routine.  Loops until end of play.
+     *  processes user inputs and converts it into a command that the game can read (battle command or regular command)
      */    
     public String playGame(String userInput) {
     	String gameStatus = "";
@@ -86,7 +87,7 @@ public class Game {
     		Command command = parser.getUserCommand(userInput);
     		gameStatus += processGameCmd(command);
     		if(p1.inBattle()){
-    			gameStatus += Combat.FIGHT_INITIATED;
+    			gameStatus += "\nYou have encountered a " + p1.getRoom().getMonster().getName();
     		}
     	} else {
     		Combat combat = new Combat(p1, p1.getRoom().getMonster(), parser);
@@ -152,7 +153,15 @@ public class Game {
     	return s;
     }
     
+    /*
+     * returns whether a game is over
+     */
     public boolean isGameOver() {
     	return gameOver;
     }
+    public Player getPlayer()
+    {
+    	return p1;
+    }
+    
 }

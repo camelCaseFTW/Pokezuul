@@ -59,4 +59,8 @@ public class GameSystem {
 	public String dspGameWelcome() {
 		return game.dspWelcome();
 	}
+	public Game getGame()
+	{
+		return game;
+	}
 }
