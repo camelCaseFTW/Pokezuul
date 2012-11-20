@@ -27,7 +27,8 @@ class GameView extends JFrame implements GameListener {
 
 	private JTextField commandInput = new JTextField(25);
 	private JButton commandButton = new JButton("Process Command");
-
+	private JButton commandListButton = new JButton("Command List");
+	
 	private JPanel mainPanel;
 	private JPanel picturePanel;
 	private JPanel commandPanel;	
@@ -78,6 +79,9 @@ class GameView extends JFrame implements GameListener {
 		scrollPane = new JScrollPane(messageDisplayer);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
+		
+		commandPanel.add(commandListButton);
+		commandListButton.setEnabled(false);
 		commandPanel.add(new JLabel("Command:"));
 		commandPanel.add(commandInput);
 		commandInput.setEditable(false);
@@ -132,6 +136,7 @@ class GameView extends JFrame implements GameListener {
 	}
 	
 	public void enableCommandPanel() {
+		commandListButton.setEnabled(true);
 		commandInput.setEditable(true);
 		commandButton.setEnabled(true);
 	}
@@ -149,6 +154,7 @@ class GameView extends JFrame implements GameListener {
 	}
 	
 	public void disableCommandPanel() {
+		commandListButton.setEnabled(false);
 		commandInput.setEditable(false);
 		commandButton.setEnabled(false);
 	}
