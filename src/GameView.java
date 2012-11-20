@@ -44,7 +44,7 @@ class GameView extends JFrame implements GameListener {
 		
 		game_model = g;
 		drawing2D = new DrawingArea(game_model);
-		drawing3D = new Drawing3DArea(game_model);
+		drawing3D = new Drawing3DArea(game_model, new Dimension(320, 320));
 		
 		gameMenu.add(newGame);
 		gameMenu.add(saveGame);
@@ -123,6 +123,10 @@ class GameView extends JFrame implements GameListener {
 		dspMessage("Game > New Game to begin your adventure!");
 	}
 
+	public Drawing3DArea get3DPanel() {
+		return drawing3D;
+	}
+	
 	public String getUserInput() {
 		return commandInput.getText();
 	}

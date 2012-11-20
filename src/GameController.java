@@ -1,3 +1,4 @@
+import java.awt.Point;
 import java.awt.event.*;
 
 public class GameController {
@@ -54,37 +55,13 @@ public class GameController {
 	}
 	
 	class DrawingMouseListener implements MouseListener {
-
+		
 		@Override
 		public void mouseClicked(MouseEvent eve) {
-
-			int x = 320;
-			int y = 320;
-			
-			int xClicked = eve.getX();
-			int yClicked = eve.getY();
-			
-			System.out.println("X: "+ xClicked);
-			System.out.println("Y: "+ yClicked);
-		
-			if( xClicked > x/9 && xClicked < x*2/9 && yClicked > y/2 && yClicked < y*7/9 && model.getGame().getPlayer().getRoom().getExitRoom(Exit.west) != null)
-			{
-				model.processCmd("go west");
-			}
-			else if( xClicked > x*7/9 && xClicked < x*8/9 && yClicked > y/2 && yClicked < y*7/9 && model.getGame().getPlayer().getRoom().getExitRoom(Exit.east) != null)
-			{
-				model.processCmd("go east");
-			}
-			else if( xClicked > x*4/9 && xClicked < x*5/9 && yClicked > y/2 && yClicked < y*2/3 && model.getGame().getPlayer().getRoom().getExitRoom(Exit.north) != null)
-			{
-				model.processCmd("go north");
-			}
-			else if( xClicked > x*7/18 && xClicked < x*11/18 && yClicked > y*13/18 && yClicked < y && model.getGame().getPlayer().getRoom().getExitRoom(Exit.south) != null)
-			{
-				model.processCmd("go south");
-			}
+			String exitClicked = view.get3DPanel().pointInExit(new Point(eve.getX(), eve.getY()));
+			if (exitClicked != null) model.processCmd("go " + exitClicked);
 		}
-
+		
 		@Override
 		public void mouseEntered(MouseEvent arg0) {
 			// TODO Auto-generated method stub

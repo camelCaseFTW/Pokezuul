@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.util.HashMap;
 
 import javax.swing.*;
 
@@ -17,14 +19,26 @@ public class Drawing3DArea extends JPanel {
 	private final static BasicStroke DEFAULT_STROKE = new BasicStroke();
 	private final static BasicStroke BOLD_STROKE = new BasicStroke(3);
 	
+	private final static String north = "N";
+	private final static String south = "S";
+	private final static String west = "W";
+	private final static String east = "E";
+	
 	private GameSystem game;
 	
-	Drawing3DArea(GameSystem g) {
+	private HashMap<Exit, Shape> exits;
+	
+	
+	Drawing3DArea(GameSystem g, Dimension dimension) {
 		game = g;
-		setPreferredSize(new Dimension(320, 320));
-		setMinimumSize(new Dimension(320,320));
+		setPreferredSize(dimension);
+		setMinimumSize(dimension);
 		setBackground(Color.white);
 		setBorder(BorderFactory.createEtchedBorder());
+		exits = new HashMap<Exit, Shape>();
+		for (Exit exit : Exit.values()) {
+			exits.put(exit, null);
+		}
 	}
 
 	@Override
@@ -50,40 +64,109 @@ public class Drawing3DArea extends JPanel {
 			g2D.drawLine(componentWidth/2, componentHeight/9, componentWidth/2, componentHeight*2/9);
 			g2D.drawLine(componentWidth*7/18, componentHeight*3/18, componentWidth*11/18, componentHeight*3/18);
 
-			g2D.drawString("N", componentWidth/2, componentHeight*1/18);
-			g2D.drawString("S", componentWidth/2, componentHeight*5/18);
-			g2D.drawString("W", componentWidth/3, componentHeight*3/18);
-			g2D.drawString("E", componentWidth*2/3, componentHeight*3/18);
+			g2D.drawString(north, componentWidth/2, componentHeight*1/18);
+			g2D.drawString(south, componentWidth/2, componentHeight*5/18);
+			g2D.drawString(west, componentWidth/3, componentHeight*3/18);
+			g2D.drawString(east, componentWidth*2/3, componentHeight*3/18);
 			
 			g2D.setStroke(DEFAULT_STROKE);
 			g2D.setColor(DEFAULT_COLOR);
 			
         	if(game.getGame().getPlayer().getRoom().getExitRoom(Exit.west) != null) {
-        		g2D.drawLine(componentWidth/9, componentHeight*8/9, componentWidth/9, componentHeight/2);
-        		g2D.drawLine(componentWidth*2/9, componentHeight*7/9, componentWidth*2/9, componentHeight/2);
-        		g2D.drawLine(componentWidth/9, componentHeight/2, componentWidth*2/9, componentHeight/2);
-        	}
+        		Polygon polygon = new Polygon();
+        		
+            	polygon.addPoint(componentWidth/9, componentHeight*8/9);
+            	polygon.addPoint(componentWidth*2/9, componentHeight*7/9);
+            	polygon.addPoint(componentWidth*2/9, componentHeight/2);
+            	polygon.addPoint(componentWidth/9, componentHeight/2);
+
+            	g2D.drawPolygon(polygon);
+            	
+        		exits.put(Exit.west, polygon);
+        	} else exits.put(Exit.west, null);
+        	
         	if(game.getGame().getPlayer().getRoom().getExitRoom(Exit.north) != null)
         	{
-        		g2D.drawLine(componentWidth*4/9, componentHeight*2/3, componentWidth*4/9, componentHeight/2);
-        		g2D.drawLine(componentWidth*5/9, componentHeight*2/3, componentWidth*5/9, componentHeight/2);
-        		g2D.drawLine(componentWidth*4/9, componentHeight/2, componentWidth*5/9, componentHeight/2);
-        	}
+        		Polygon polygon = new Polygon();
+        		
+        		polygon.addPoint(componentWidth*4/9, componentHeight*2/3);
+        		polygon.addPoint(componentWidth*5/9, componentHeight*2/3);
+        		polygon.addPoint(componentWidth*5/9, componentHeight/2);
+        		polygon.addPoint(componentWidth*4/9, componentHeight/2);
+
+        		g2D.drawPolygon(polygon);
+        		
+        		exits.put(Exit.north, polygon);
+        	} else exits.put(Exit.north, null);
+        	
         	if(game.getGame().getPlayer().getRoom().getExitRoom(Exit.east) != null)
         	{
-        		g2D.drawLine(componentWidth*8/9, componentHeight*8/9, componentWidth*8/9, componentHeight/2);
-        		g2D.drawLine(componentWidth*7/9, componentHeight*7/9, componentWidth*7/9, componentHeight/2);
-        		g2D.drawLine(componentWidth*7/9, componentHeight/2, componentWidth*8/9, componentHeight/2);		
-        	}
+        		Polygon polygon = new Polygon();
+        		
+        		polygon.addPoint(componentWidth*8/9, componentHeight*8/9);
+        		polygon.addPoint(componentWidth*7/9, componentHeight*7/9);
+        		polygon.addPoint(componentWidth*7/9, componentHeight/2);
+        		polygon.addPoint(componentWidth*8/9, componentHeight/2);
+        		
+        		g2D.drawPolygon(polygon);
+        		
+        		exits.put(Exit.east, polygon);
+        	} else exits.put(Exit.east, null);
+        	
         	if(game.getGame().getPlayer().getRoom().getExitRoom(Exit.south) != null)
         	{
+        		Polygon polygon = new Polygon();
         		g2D.setStroke(DASHED_STROKE);
-        		g2D.drawLine(componentWidth*7/18, componentHeight, componentWidth*7/18, componentHeight*13/18);
-        		g2D.drawLine(componentWidth*11/18, componentHeight, componentWidth*11/18, componentHeight*13/18);
-        		g2D.drawLine(componentWidth*7/18, componentHeight*13/18, componentWidth*11/18, componentHeight*13/18);
-			
-			g2D.setStroke(DEFAULT_STROKE);
-        	}
-        	}
+        		
+        		polygon.addPoint(componentWidth*7/18, componentHeight);
+        		polygon.addPoint(componentWidth*11/18, componentHeight);
+        		polygon.addPoint(componentWidth*11/18, componentHeight*13/18);
+        		polygon.addPoint(componentWidth*7/18, componentHeight*13/18);
+
+        		g2D.drawPolygon(polygon);
+        		
+        		g2D.setStroke(DEFAULT_STROKE);        		
+        		exits.put(Exit.south, polygon);
+        	} else exits.put(Exit.south, null);
+        	
+        	if(game.getGame().getPlayer().getRoom().getExitRoom(Exit.teleporter) != null)
+        	{
+        		Shape shape = new Ellipse2D.Double(componentWidth*2/9, componentHeight*7/9, componentWidth/9, componentHeight*2/9);
+        		
+        		g2D.setColor(Color.BLUE);
+        		g2D.draw(shape);
+        		
+        		g2D.setColor(DEFAULT_COLOR);
+        		exits.put(Exit.teleporter, shape);
+        	} else exits.put(Exit.teleporter, null);
+		}
 	}
+	
+	public String pointInExit(Point p) {
+		for (Exit e : exits.keySet()) {
+			Shape shape = exits.get(e);
+			if (shape != null) {
+				if (shape.contains(p)) return e.toString();
+			}
+		}
+		return null;
+	}
+	
+	/*
+	 * This was initially used to make the exits using 4 points, but this actually created more code when calling the function
+	 * since you have to turn the x and y into new Point(x,y), which is then decomposed back into x and y. Also, exits like
+	 * the teleporter is not rectangular, so this function became obsolete
+	 */
+	/*
+	private Polygon makeExit(Point p1, Point p2, Point p3, Point p4) {
+		Polygon polygon = new Polygon();
+		polygon.addPoint(p1.x, p1.y);
+		polygon.addPoint(p2.x, p2.y);
+		polygon.addPoint(p3.x, p3.y);
+		polygon.addPoint(p4.x, p4.y);
+		
+		return polygon;
+	}
+	*/
+
 }
