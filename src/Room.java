@@ -112,6 +112,7 @@ public class Room extends ItemHolder {
         return allExits;
     }
     
+    // sees if this room in entered (currently not used)
     public Room roomEntered(String room) {
         return this;
     }
@@ -120,14 +121,17 @@ public class Room extends ItemHolder {
         exitable = canExit;
     }
     
+    // determines whether you can exit this room
     public boolean isExitable() {
         return exitable;
     }
     
+    // sets wheter you can enter this room
     public void setEnterable(boolean canEnter) {
         enterable = canEnter;
     }
     
+    // sees if you can enter this room
     public boolean isEnterable() {
         return enterable;
     }

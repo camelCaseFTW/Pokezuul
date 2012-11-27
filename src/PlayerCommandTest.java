@@ -1,3 +1,6 @@
+/**
+ * A test class that contains all the tests for the player clas
+ */
 import junit.framework.TestCase;
 
 public class PlayerCommandTest extends TestCase{

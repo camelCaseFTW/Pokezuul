@@ -3,10 +3,12 @@
 //          private state, use of repaint().
 // Author : Fred Swartz - 21 Sept 2006 - Placed in public domain.
 
+//Written and maintained by Aryan
+
+
 import java.awt.*;
+
 import javax.swing.*;
-
-
 
 ///////////////////////////////////////////////////////// DrawingArea
 class DrawingArea extends JPanel {
@@ -32,7 +34,8 @@ class DrawingArea extends JPanel {
         super.paintComponent(g);  // Ask parent to paint background.
 
         g.setColor(_ovalColor);
-        
+        ///////////////////////////////////////////////////////////////
+	
         
                 
         if(gameSystem.gameRunning())
@@ -49,6 +52,8 @@ class DrawingArea extends JPanel {
         
         	g.setFont(regular);
         	
+        	
+        	// Exits in the room
         	if( gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.west) != null)
         	{
         		drawLeftArrow(g, 40, 150, 50, 150);
@@ -76,6 +81,8 @@ class DrawingArea extends JPanel {
         		g.drawString(gameSystem.getGame().getPlayer().getRoom().getExitRoom(Exit.teleporter).toString(), 55, 245);
         	}
         	
+        	
+        	// monster in the room
         	if(gameSystem.getGame().getPlayer().getRoom().hasMonster())
         	{
         		g.setColor(Color.RED);
@@ -84,6 +91,8 @@ class DrawingArea extends JPanel {
         	    g.drawString(gameSystem.getGame().getPlayer().getRoom().getMonster().getName(), 130, 70);
         	}
         	
+        	
+        	// items in the room
         	if(gameSystem.getGame().getPlayer().getRoom().getAllItems() != null)
         	{
         		g.setColor(Color.GREEN);
@@ -106,6 +115,9 @@ class DrawingArea extends JPanel {
         _ovalColor = col;  // Remember color.
         repaint();         // Color changed, must repaint
     }
+    
+    
+    // The following function are self-explaintory by the names (draws arrows)
     
     public void drawLeftArrow(Graphics g,int x0,int y0, int x1,int y1){
 
@@ -142,4 +154,7 @@ class DrawingArea extends JPanel {
     	g.setColor(Color.BLUE);
     	g.drawOval(x0, y0, width, height);
     }
+    
+              
+    	 
 }

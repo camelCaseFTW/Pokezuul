@@ -41,6 +41,8 @@ public abstract class ItemHolder {
     	return this.removedItems;
     }
     
+    // removes an item by the name (string name)
+    
     public void removeItem(String itemName) {
         /*for (Item item : items )
             if (item.getName().equals(itemName)) removeItem(item);*/ //E.K
@@ -48,6 +50,7 @@ public abstract class ItemHolder {
     	removeItem(itm);
     }
     
+    // makes a new itemList
     public void clearItemList() {
         items = new ArrayList<Item>();
     }
@@ -66,11 +69,22 @@ public abstract class ItemHolder {
         return allItems;
     }
     
+    // gets the entire itemlist
     public List<Item> getItemList() {
         return items;
     }
     
+    public List<String> getItemListString() {
+    	List<String> list = new ArrayList<String>();
+    	for (Item i : items) list.add(i.getName());
+    	return list;
+    }
+    
     public int numOfItems() {
     	return items.size();
+    }
+    
+    public boolean isInventoryEmpty() {
+    	return (items.size()==0);
     }
 }

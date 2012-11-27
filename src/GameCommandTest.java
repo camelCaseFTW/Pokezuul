@@ -1,3 +1,7 @@
+/**
+ * A test class full of test cases I believe should be done on the Game commands
+ */
+
 import junit.framework.TestCase;
 
 public class GameCommandTest extends TestCase {

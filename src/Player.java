@@ -10,6 +10,10 @@ import java.util.*;
 public class Player extends Creature{
 		
 	private static final String PLAYER_NAME = "Player";
+	private static final int ATK_POWER = 5;
+	private static final int DMG_RANGE = 2;
+	private static final int BONUS_ATK = 0;
+	private static final int PLAYER_HP = 20;	
 	
     private Room currentRoom;
     private Stack<Room> steps;
@@ -27,11 +31,11 @@ public class Player extends Creature{
         moves = new Stack<Command>();
         undoMoves = new Stack<Command>();
 
-        attackPower = 5;
-        bonusAttack = 0;
-        damageRange = 2;
-        maxHP = 20;
-        currentHP = 20;
+        attackPower = ATK_POWER;
+        bonusAttack = BONUS_ATK;
+        damageRange = DMG_RANGE;
+        maxHP = PLAYER_HP;
+        currentHP = PLAYER_HP;
         equippedItem = null;
     }
     
@@ -315,7 +319,7 @@ public class Player extends Creature{
         }
         if (!(examine==null)) {
             return itemName + ": " + examine.getDescription();
-        } else return "Consumable cannot be used or consumable doesn't exist!";
+        } else return "Item cannot be examined or item doesn't exist!";
     }
     
     /**

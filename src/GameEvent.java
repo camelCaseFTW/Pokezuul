@@ -1,3 +1,6 @@
+/**
+ * An event created by the model to alert the views that the game has changed
+ */
 import java.util.EventObject;
 
 public class GameEvent extends EventObject {	
@@ -10,6 +13,7 @@ public class GameEvent extends EventObject {
 		gameStatus = ((GameSystem)source).getGameStatus();
 	}
 	
+	// returns the status of the game
 	public String getGameStatus() {
 		return gameStatus;
 	}

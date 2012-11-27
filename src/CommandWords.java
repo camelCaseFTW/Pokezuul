@@ -2,7 +2,10 @@
  * A class that contains the list of battle commands, and regular commands ( and their string representations)
  */
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class CommandWords
 {
@@ -52,15 +55,31 @@ public class CommandWords
     }
     
     /**
-     * Print out all the possible commands
+     * Returns all possible commands as a list
      */
+    public List<String> getCommandList() {
+    	List<String> list = new ArrayList<String>();
+    	list.addAll(validCommands.keySet());
+    	return list;
+    }
+        
+    /**
+     * Returns all possible battle commands as a list
+     */
+    public List<String> getBattleCommandList() {
+    	List<String> list = new ArrayList<String>();
+    	list.addAll(validBattleCommands.keySet());
+    	return list;
+    }
     
+    // returns all the commands in a string format
     public String dspAllCommands() {
     	String s = "";
     	for(String command : validCommands.keySet()) s+= "  " + command;
     	return s;
     }
     
+    // returns all the battle command words in a string format
     public String dspAllBattleCommands() {
     	String s = "";
     	for(String bCommand : validBattleCommands.keySet()) s+= "  " + bCommand;

@@ -1,3 +1,9 @@
+/**
+ * A 3D representation of the model. The exits in this view are clickable listened to by the GameController
+ * 
+ * @author Alok
+ */
+
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.HashMap;
@@ -15,9 +21,9 @@ public class Drawing3DArea extends JPanel {
         new BasicStroke(1.0f,
                         BasicStroke.CAP_BUTT,
                         BasicStroke.JOIN_MITER,
-                        10.0f, dash1, 0.0f);
+                        10.0f, dash1, 0.0f);			// this allows me to create shapes using dashed lines
 	private final static BasicStroke DEFAULT_STROKE = new BasicStroke();
-	private final static BasicStroke BOLD_STROKE = new BasicStroke(3);
+	private final static BasicStroke BOLD_STROKE = new BasicStroke(3);		// this allows me to create shapes using bolded (thick) lines
 	
 	private final static String north = "N";
 	private final static String south = "S";
@@ -26,8 +32,9 @@ public class Drawing3DArea extends JPanel {
 	
 	private GameSystem game;
 	
-	private HashMap<Exit, Shape> exits;
+	private HashMap<Exit, Shape> exits;		//this hashmap makes each exit to a certain shape (to keep track of their location)
 	
+	//Unlike the static 2D view, the 3D view can stretch, allowing any 2d dimension as an input
 	
 	Drawing3DArea(GameSystem g, Dimension dimension) {
 		game = g;
@@ -41,6 +48,8 @@ public class Drawing3DArea extends JPanel {
 		}
 	}
 
+	
+	// The entire 3D view is painted using coordinates from ratios, so the shapes in the panel will shrink/expand along with the panel
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -52,6 +61,10 @@ public class Drawing3DArea extends JPanel {
 		int componentWidth = getWidth();
 		
 		if (game.gameRunning()) {
+			
+		// Drawing the non-interactable drawings in the 3D View
+		
+			//the following lines represent the room
 			g2D.drawRect(componentWidth/3, componentHeight/3, componentWidth/3, componentHeight/3);
 			
 			g2D.drawLine(ORIGIN_X, ORIGIN_Y, componentWidth/3, componentHeight/3);
@@ -59,6 +72,7 @@ public class Drawing3DArea extends JPanel {
 			g2D.drawLine(ORIGIN_X, componentHeight, componentWidth/3, componentHeight*2/3);
 			g2D.drawLine(componentWidth, componentHeight, componentWidth*2/3, componentHeight*2/3);		
 		
+			// this represents the compass to tell what each exit represents
 			g2D.setStroke(BOLD_STROKE);
 			g2D.setColor(Color.RED);
 			g2D.drawLine(componentWidth/2, componentHeight/9, componentWidth/2, componentHeight*2/9);
@@ -71,6 +85,8 @@ public class Drawing3DArea extends JPanel {
 			
 			g2D.setStroke(DEFAULT_STROKE);
 			g2D.setColor(DEFAULT_COLOR);
+
+		// The following is all the iteractable drawings (i.e the exits)
 			
         	if(game.getGame().getPlayer().getRoom().getExitRoom(Exit.west) != null) {
         		Polygon polygon = new Polygon();
@@ -139,9 +155,45 @@ public class Drawing3DArea extends JPanel {
         		g2D.setColor(DEFAULT_COLOR);
         		exits.put(Exit.teleporter, shape);
         	} else exits.put(Exit.teleporter, null);
+        	
+        	// These are things that COULD exist, but not necessarily (like items, and monsters)
+        	if(game.getGame().getPlayer().getRoom().numOfItems() > 0)
+        	{
+        		Shape shape = new Ellipse2D.Double(componentWidth*2/3, componentHeight*7/9, componentWidth/9, componentHeight/9);
+    		
+        		g2D.setColor(Color.GREEN);
+        		g2D.setStroke(BOLD_STROKE);
+        		g2D.draw(shape);
+        	}
+        	
+        	if(game.getGame().getPlayer().getRoom().hasMonster())
+        	{
+        		Polygon monsterBody = new Polygon();
+        		Polygon monsterLegs = new Polygon();
+        		Shape monsterHead = new Ellipse2D.Double(componentWidth*4/9, componentHeight*4/9, componentHeight*1/9, componentHeight*1/9);
+        		
+        		monsterBody.addPoint(componentWidth*4/9, componentHeight*7/9);
+        		monsterBody.addPoint(componentWidth*4/9, componentHeight*4/9);
+        		monsterBody.addPoint(componentWidth*5/9, componentHeight*4/9);
+        		monsterBody.addPoint(componentWidth*5/9, componentHeight*7/9);
+        		
+        		monsterLegs.addPoint(componentWidth*17/36, componentHeight*7/9);
+        		monsterLegs.addPoint(componentWidth*19/36, componentHeight*7/9);
+        		monsterLegs.addPoint(componentWidth*18/36, componentHeight*8/9);
+        		
+        		g2D.setColor(Color.RED);
+        		g2D.setStroke(BOLD_STROKE);
+        		g2D.drawPolygon(monsterBody);
+        		g2D.drawPolygon(monsterLegs);
+        		g2D.draw(monsterHead);
+        	}
+    		g2D.setColor(DEFAULT_COLOR);
 		}
 	}
 	
+	/* This function determines if the point given is within any of the shapes
+	 * This function is used to check if the user clicked any exit
+	 */
 	public String pointInExit(Point p) {
 		for (Exit e : exits.keySet()) {
 			Shape shape = exits.get(e);

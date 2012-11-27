@@ -74,4 +74,8 @@ public class Parser {
     public String showAllBattleCommands() {
     	return commands.dspAllBattleCommands();
     }
+    
+    public CommandWords getCommandWords() {
+    	return commands;
+    }
 }

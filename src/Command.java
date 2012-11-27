@@ -19,6 +19,7 @@
 
 /**
  * Pretty much the same as the Command in Zuul-better-version2
+ * A command is defined by an action (CommandTypes), and what the action is performed on (String)
  * Author: Alok Swamy
  */
 
@@ -57,11 +58,8 @@ public class Command
     {
         return (secondWord != null);
     }
-    /**
-     * Changes the second word of the command to word;
-     * @param word
-     * @author Ehsan Karami
-     */
+    
+    // changes the second word to what is sent in (used to forcefully do a command)
     public void setSecondWord(String word)
     {
     	secondWord = word;

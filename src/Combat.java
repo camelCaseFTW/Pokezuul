@@ -1,5 +1,7 @@
 /**
  * Combat class that makes two creatures fight to the death!!!
+ * It takes two creatures, one player and one monster, and allows the player to perform certain commands on the monster defined by Parser
+ * E.g. player can fight the monster, flee, etc.
  */
 
 import java.util.Random;

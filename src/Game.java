@@ -159,9 +159,19 @@ public class Game {
     public boolean isGameOver() {
     	return gameOver;
     }
+    
+    /*
+     * returns the player
+     */
     public Player getPlayer()
     {
     	return p1;
     }
-    
+ 
+    /*
+     * returns the parser
+     */
+    public Parser getParser() {
+    	return parser;
+    }
 }
