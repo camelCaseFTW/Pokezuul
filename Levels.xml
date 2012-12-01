@@ -1,0 +1,90 @@
+<level number=1>
+	<room name="Outside" description="outside the main entrance of the university">
+		<items>
+			<weapon name=""> </weapon>
+			<consumable name=""></consumable>
+			<powerup name="" description="">
+				<attack></attack>
+				<health></health>
+			</powerup>
+		</items>
+		<exits>
+			<exit direction="east">Theater</exit>
+			<exit direction="south">Lab</exit>
+			<exit direction="west">Pub</exit>
+			<exit direction="teleporter">Office</exit>
+		</exits>
+		<monster name="">
+			<weapon name=""></weapon>
+		</monster>
+	</room>
+	
+	<room name="Theater" description="in a lecture theater">
+		<items>
+			<weapon name=""> </weapon>
+			<consumable name=""></consumable>
+			<powerup name="mini_powerup" description="Attack Boost: 2, Health Boost: 5">
+				<attack>2</attack>
+				<health>5</health>
+			</powerup>
+		</items>
+		<exits>
+			<exit direction="west">outside</exit>
+		</exits>
+		<monster name="Vampire">
+			<weapon name="SuperSword">3</weapon>
+		</monster>
+	</room>
+	
+	<room name="pub" description="in the campus pub">
+		<items>
+			<weapon name="Sword"> 2</weapon>
+			<consumable name=""></consumable>
+			<powerup name="" description="">
+				<attack></attack>
+				<health></health>
+			</powerup>
+		</items>
+		<exits>
+			<exit direction="east">outside</exit>
+		</exits>
+		<monster name="">
+			<weapon name=""></weapon>
+		</monster>
+	</room>
+	
+	<room name="lab" description="in a computing lab">
+		<items>
+			<weapon name=""></weapon>
+			<consumable name="SmallPotion">100</consumable>
+			<powerup name="" description="">
+				<attack></attack>
+				<health></health>
+			</powerup>
+		</items>
+		<exits>
+			<exit direction="north">outside</exit>
+			<exit direction="east">office</exit>
+		</exits>
+		<monster name="Vampire">
+			<weapon name="SuperSword">3</weapon>
+		</monster>
+	</room>
+	
+	<room name="office" description="in the computing admin office">
+		<items>
+			<weapon name=""></weapon>
+			<consumable name=""></consumable>
+			<powerup name="" description="">
+				<attack></attack>
+				<health></health>
+			</powerup>
+		</items>
+		<exits>
+			<exit direction="west">lab</exit>
+		</exits>
+		<monster name="Vampire">
+			<weapon name="SuperSword">3</weapon>
+		</monster>
+	</room>	
+</level>
