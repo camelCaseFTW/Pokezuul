@@ -1,8 +1,10 @@
+import java.io.Serializable;
+
 /**
  * Creature a superclass for the monster and player and whoever that will be "living" in the world of Zuul
  *
  */
-public abstract class Creature extends ItemHolder {
+public abstract class Creature extends ItemHolder implements Serializable{
    
     protected String name;
     protected int attackPower;

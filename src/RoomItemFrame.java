@@ -6,6 +6,7 @@
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -16,8 +17,6 @@ import javax.swing.ListSelectionModel;
 
 
 public class RoomItemFrame extends JFrame implements GameListener {
-	
-	private static final long serialVersionUID = -8817821070075378882L;
 	
 	private JList<String> list;				// holds a list of all the items in the room
 	private DefaultListModel<String> listModel;
@@ -31,7 +30,10 @@ public class RoomItemFrame extends JFrame implements GameListener {
 		view = v;
 		listModel = new DefaultListModel<String>();
 		List<String> listContent = game.getGame().getPlayer().getRoom().getItemListString();
-		for (String s : listContent) listModel.addElement(s);
+		for(String s : listContent) 
+		{
+			listModel.addElement(s);
+		}
 		list = new JList<String>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setSelectedIndex(0);
@@ -47,9 +49,14 @@ public class RoomItemFrame extends JFrame implements GameListener {
 	// when the model changes, this is called
 	@Override
 	public void commandProcessed(GameEvent e) {
+		System.out.println("in itemframe");
 		listModel.clear();
 		List<String> listContent = game.getGame().getPlayer().getRoom().getItemListString();
-		for (String s : listContent) listModel.addElement(s);
+		for (String s : listContent) 
+		{
+			System.out.println("in frame: "+ s);
+			listModel.addElement(s);
+		}
 	}
 
 	@Override

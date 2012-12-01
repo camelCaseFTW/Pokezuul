@@ -20,9 +20,13 @@ import java.util.*;
  * @author: Alok Swamy
  */
 
-public class Room extends ItemHolder {
+public class Room extends ItemHolder implements  java.io.Serializable{
     
-    public static final String unexitable = "** You cannot leave the room";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4211012997896041829L;
+	public static final String unexitable = "** You cannot leave the room";
     public static final String unenterable = "** You cannot enter the room - It seems to be locked!";
     
     public String description;

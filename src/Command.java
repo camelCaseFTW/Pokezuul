@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * This class is part of the "World of Zuul" application. 
  * "World of Zuul" is a very simple, text based adventure game.  
@@ -23,9 +25,13 @@
  * Author: Alok Swamy
  */
 
-public class Command
+public class Command implements Serializable
 {
-    private CommandTypes commandWord;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4202982025011127213L;
+	private CommandTypes commandWord;
     private String secondWord;
 
     // Command that has 2 words, one is a command enum, other is a string

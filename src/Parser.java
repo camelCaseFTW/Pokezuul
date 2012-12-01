@@ -1,4 +1,5 @@
 
+import java.io.Serializable;
 import java.util.StringTokenizer;
 /**
  * This class is part of the "World of Zuul" application. 
@@ -22,8 +23,12 @@ import java.util.StringTokenizer;
  * author: Alok Swamy
  * 
  */
-public class Parser {
-    private CommandWords commands;  // holds all valid command words
+public class Parser implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3431455994787292988L;
+	private CommandWords commands;  // holds all valid command words
 
     /**
      * Create a parser to read from the terminal window.

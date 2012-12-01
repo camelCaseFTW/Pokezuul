@@ -2,18 +2,36 @@
  * A game system makes new games, destroys old ones, tells when the game is over, and whether it is still running (or shutdown)
  * It is equivalent to a gaming console (Game class represents each game you put in the console)
  */
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameSystem {
+public class GameSystem  implements  java.io.Serializable{
+	/**
+	 * 
+	 */
 	private Game game;
 	private String gameStatus;
-	private List<GameListener> listenerList;
+	private List<GameListener> listenerList = new ArrayList<GameListener>();
+	public List<GameListener> getListenerList() {
+		return listenerList;
+	}
+	public void setListenerList(List<GameListener> listenerList) {
+		this.listenerList = listenerList;
+	}
+
+	private static final long serialVersionUID = -6303923165721315457L;
+
 	
 	public GameSystem() {
 		game = null;
 		gameStatus = new String();
-		listenerList = new ArrayList<GameListener>();
+		
+	}
+	public void setGameStatus(String gameStatus) {
+		this.gameStatus = gameStatus;
 	}
 	
 	// Add people who want to listen to the game
@@ -58,12 +76,26 @@ public class GameSystem {
 		announceGameStatus(new GameEvent(this));
 	}
 	
+	public void openGame(Game g) {
+		Game newGame = g;
+		//newGame.initializeGame();
+		
+		game = newGame;
+		gameStatus = game.dspWelcome();
+		//announceGameStatus(new GameEvent(this));
+	}
+	
+	
 	// Determines whether the game console is on, but no game is running
 	public boolean gameRunning() {
 		if (game != null) return true;
 		return false;
 	}
 	
+	public Game getGame()
+	{
+		return this.game;
+	}
 	// returns the status of the game
 	public String getGameStatus() {
 		return gameStatus;
@@ -74,9 +106,46 @@ public class GameSystem {
 		return game.dspWelcome();
 	}
 	
-	// returns the game
-	public Game getGame()
+	public void setGame(Game g)
 	{
-		return game;
+		this.game = g;
 	}
+	
+	 public void writeObject( ObjectOutputStream aOutputStream) throws IOException {
+		 
+		  aOutputStream.writeObject(this);
+		  aOutputStream.writeObject(this.game);
+		  aOutputStream.writeObject(this.game.getPlayer());
+	 }
+	 
+	 public void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+		   //perform the default serialization for all non-transient, non-static fields
+		 
+		   GameSystem  gs= (GameSystem)ois.readObject();
+		   Game  g= (Game)ois.readObject();
+		   Player p = (Player)ois.readObject();
+		   gs.setGame(g);
+		   g.setPlayer(p);
+		   gs.gameStatus = new String();		   
+		   GameView gv = new GameView(gs);
+		   gs.listenerList = new ArrayList<GameListener>();
+		   gs.addGameListener(gv);
+		   GameController c = new GameController(gv, gs);
+		   gv.createGameFrames();
+		   
+		   gv.createCommandListFrame();
+		   gs.addGameListener(gv.getInventoryView());
+		   gs.addGameListener(gv.getRoomItemView());
+		   gs.addGameListener(gv.getCommandListView());
+			
+		   gv.setVisible(true);
+		  gv.setLocationRelativeTo(null);
+		  gv.enableCommandPanel();
+		  gv.enableGameButtons();
+		  
+			
+			
+	
+	 }
+	
 }

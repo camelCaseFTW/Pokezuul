@@ -6,6 +6,7 @@
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -15,7 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 
-public class InventoryFrame extends JFrame implements GameListener {
+public class InventoryFrame extends JFrame implements GameListener, Serializable{
 
 	private static final long serialVersionUID = -9185125079205946734L;
 	
@@ -31,7 +32,11 @@ public class InventoryFrame extends JFrame implements GameListener {
 		view = v;
 		listModel = new DefaultListModel<String>();
 		List<String> listContent = game.getGame().getPlayer().getItemListString();
-		for (String s : listContent) listModel.addElement(s);
+		for (String s : listContent) 
+		{
+			listModel.addElement(s);
+			System.out.println("item: " + s);
+		}
 		list = new JList<String>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setSelectedIndex(0);

@@ -2,12 +2,13 @@
  * A class that contains the list of battle commands, and regular commands ( and their string representations)
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class CommandWords
+public class CommandWords implements Serializable
 {
     // A mapping between a command word and the CommandWord
     // associated with it.

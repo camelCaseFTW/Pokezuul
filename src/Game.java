@@ -1,3 +1,8 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -24,8 +29,12 @@
  * Author: Alok Swamy
  */
 
-public class Game {
+public class Game implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1748238845495656824L;
 	public static final String GAME_END = "Game Over! 'Game > New Game' to start a new game.";
 	public static final String NEW_LINE = "\n";
 	
@@ -174,4 +183,12 @@ public class Game {
     public Parser getParser() {
     	return parser;
     }
+
+	public void setPlayer(Player player) {
+		this.p1 = player;
+		
+	}
+    
+  
+	 
 }

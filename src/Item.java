@@ -1,10 +1,12 @@
+import java.io.Serializable;
+
 
 /**
  * An item that any ItemHolder can carry
  * 
  * @author Alok Swamy
  */
-public class Item {
+public class Item implements  java.io.Serializable{
 	
 	private static final String default_description = "An ordinary item";
 	

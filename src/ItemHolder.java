@@ -1,10 +1,11 @@
+import java.io.Serializable;
 import java.util.*;
 /**
  * Abstract class ItemHolder - An object that is able to carry a bunch of items
  * 
  * @author Alok Swamy
  */
-public abstract class ItemHolder {
+public abstract class ItemHolder  implements  java.io.Serializable{
 
 	private static final String NO_ITEMS = " -Empty-";
 	protected List<Item> items;
@@ -76,7 +77,8 @@ public abstract class ItemHolder {
     
     public List<String> getItemListString() {
     	List<String> list = new ArrayList<String>();
-    	for (Item i : items) list.add(i.getName());
+    	for (Item i : items) 
+    		list.add(i.getName());
     	return list;
     }
     

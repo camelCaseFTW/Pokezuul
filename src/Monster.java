@@ -8,8 +8,12 @@
  * @author: Alok Swamy
  */
 
-public class Monster extends Creature{
+public class Monster extends Creature implements java.io.Serializable{
     
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5374460189057195715L;
 	private static final int DEFAULT_ATK = 10;
 	private static final int DEFAULT_RANGE = 1;
 	private static final int DEFAULT_MAXHP = 10;

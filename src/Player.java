@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -7,8 +8,12 @@ import java.util.*;
  * 
  * @author Alok Swamy and Eshan
  */
-public class Player extends Creature{
+public class Player extends Creature implements Serializable{
 		
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2092499913781561060L;
 	private static final String PLAYER_NAME = "Player";
 	private static final int ATK_POWER = 5;
 	private static final int DMG_RANGE = 2;

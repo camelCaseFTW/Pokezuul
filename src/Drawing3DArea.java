@@ -6,11 +6,12 @@
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.io.Serializable;
 import java.util.HashMap;
 
 import javax.swing.*;
 
-public class Drawing3DArea extends JPanel {
+public class Drawing3DArea extends JPanel implements Serializable{
 
 	private static final long serialVersionUID = -6491486951861072281L;
 	private static final int ORIGIN_X = 0;
@@ -32,6 +33,15 @@ public class Drawing3DArea extends JPanel {
 	
 	private GameSystem game;
 	
+	public GameSystem getGame() {
+		return game;
+	}
+
+
+	public void setGame(GameSystem game) {
+		this.game = game;
+	}
+
 	private HashMap<Exit, Shape> exits;		//this hashmap makes each exit to a certain shape (to keep track of their location)
 	
 	//Unlike the static 2D view, the 3D view can stretch, allowing any 2d dimension as an input

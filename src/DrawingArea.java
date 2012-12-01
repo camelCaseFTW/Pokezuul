@@ -7,11 +7,12 @@
 
 
 import java.awt.*;
+import java.io.Serializable;
 
 import javax.swing.*;
 
 ///////////////////////////////////////////////////////// DrawingArea
-class DrawingArea extends JPanel {
+class DrawingArea extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -30,14 +31,23 @@ class DrawingArea extends JPanel {
     }
 
     //================================================ paintComponent
-    @Override public void paintComponent(Graphics g) {
-        super.paintComponent(g);  // Ask parent to paint background.
+
+    public GameSystem getGameSystem() {
+		return gameSystem;
+	}
+
+	public void setGameSystem(GameSystem gameSystem) {
+		this.gameSystem = gameSystem;
+	}
+
+	@Override public void paintComponent(Graphics g) {
+    	super.paintComponent(g);  // Ask parent to paint background.
 
         g.setColor(_ovalColor);
         ///////////////////////////////////////////////////////////////
 	
         
-                
+        
         if(gameSystem.gameRunning())
         {
         	g.drawRect(50,50,200,200);

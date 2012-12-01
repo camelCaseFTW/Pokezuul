@@ -8,35 +8,38 @@ import java.awt.*;
 import javax.swing.*;
 
 import java.awt.event.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-class GameView extends JFrame implements GameListener {
-	
-	private static final long serialVersionUID = 1L;
+class GameView extends JFrame implements GameListener{
+
 
 	private static final String newline = "\n";
 	
 	// making the menu bar and its items
-	private JMenuBar menuBar = new JMenuBar();
+	private JMenuBar menuBar;
 
-	private JMenu gameMenu = new JMenu("Game");
-	private JMenuItem newGame = new JMenuItem("New Game");
-	private JMenuItem saveGame = new JMenuItem("Save");
-	private JMenuItem openGame = new JMenuItem("Open");
-	private JMenuItem quitGame = new JMenuItem("Quit");
+	private JMenu gameMenu;
+	private JMenuItem newGame;
+	private JMenuItem saveGame;
+	private JMenuItem openGame;
+	private JMenuItem quitGame;
+	
+	private JMenu editMenu;
+	private JMenuItem undoGame;
+	private JMenuItem redoGame;
 
-	private JMenu editMenu = new JMenu("Edit");
-	private JMenuItem undoGame = new JMenuItem("Undo");
-	private JMenuItem redoGame = new JMenuItem("Redo");
-
-	private JMenu helpMenu = new JMenu("Help");
-	private JMenuItem helpGame = new JMenuItem("Detailed Help");
+	private JMenu helpMenu;
+	private JMenuItem helpGame;
 
 	
 	// making the command box where all the inputs are going to be processed
-	private JTextField commandInput = new JTextField(25);
+	private JTextField commandInput;
 
-	private JButton commandButton = new JButton("Process Command");
-	private JButton commandListButton = new JButton("Command List");
+	private JButton commandButton;
+	private JButton commandListButton;
 	
 	
 	// making the panels where all the components will be placed
@@ -50,13 +53,21 @@ class GameView extends JFrame implements GameListener {
 	// the model
 	private GameSystem game_model;
 
+	public GameSystem getGame_model() {
+		return game_model;
+	}
+
+	public void setGame_model(GameSystem game_model) {
+		this.game_model = game_model;
+	}
+
 	// the 3d and 2d views (panels)
 	private DrawingArea drawing2D;
 	private Drawing3DArea drawing3D;
 	
 	// Buttons that opens the item frames
-	private JButton playerInventory = new JButton("Inventory");
-	private JButton roomInventory = new JButton("Room Contents");
+	private JButton playerInventory;
+	private JButton roomInventory;
 	
 	// the frames that are connected to the view. when the view clicks a button to display the model's contents, 
 	// these frames open up
@@ -67,14 +78,39 @@ class GameView extends JFrame implements GameListener {
 	public GameView(GameSystem g) {
 		
 		// instanciate the model, and create the 2D and 3D views
-		game_model = g;
-		drawing2D = new DrawingArea(game_model);
-		drawing3D = new Drawing3DArea(game_model, new Dimension(320, 320));
+		this.game_model = g;
+		this.reconstruct();
+		//this.setResizable(false);
+		dspMessage("Game > New Game to begin your adventure!");
+	}
+	
+	public void reconstruct()
+	{
+		this.drawing2D = new DrawingArea(game_model);
+		this.drawing3D = new Drawing3DArea(game_model, new Dimension(320, 320));
+		
+		menuBar = new JMenuBar();
+		gameMenu = new JMenu("Game");
+		newGame = new JMenuItem("New Game");
+		saveGame = new JMenuItem("Save");
+		openGame = new JMenuItem("Open");
+		quitGame = new JMenuItem("Quit");
+		editMenu = new JMenu("Edit");
+		undoGame = new JMenuItem("Undo");
+		redoGame = new JMenuItem("Redo");
+		helpMenu = new JMenu("Help");
+		helpGame = new JMenuItem("Detailed Help");
+		commandInput = new JTextField(25);
+		commandButton = new JButton("Process Command");
+		commandListButton = new JButton("Command List");
+		playerInventory = new JButton("Inventory");
+		roomInventory = new JButton("Room Contents");
+
 		
 		// putting together the menu bar
 		gameMenu.add(newGame);
 		gameMenu.add(saveGame);
-		saveGame.setEnabled(false);
+		saveGame.setEnabled(true);
 		gameMenu.add(openGame);
 		gameMenu.add(quitGame);
 		
@@ -86,7 +122,7 @@ class GameView extends JFrame implements GameListener {
 		menuBar.add(gameMenu);
 		menuBar.add(editMenu);
 		menuBar.add(helpMenu);
-		
+
 		
 		// the main panel contains all the other panels: picture panel (where the 2d, 3d, and buttons that open frames that show items are placed), command panel (where all the commands happen)
 		mainPanel = new JPanel();
@@ -164,15 +200,13 @@ class GameView extends JFrame implements GameListener {
 		mainPanel.add(commandPanel);
 		
 		disableGameButtons();
-		
-		this.setLayout(new FlowLayout());
-		this.setJMenuBar(menuBar);
+
+		setJMenuBar(menuBar);		
 		this.setContentPane(mainPanel);
 		this.pack();
 		this.setTitle("Zuul");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//this.setResizable(false);
-		dspMessage("Game > New Game to begin your adventure!");
+
 	}
 	
 	// sets the string in the command box
@@ -255,8 +289,16 @@ class GameView extends JFrame implements GameListener {
 		helpGame.addActionListener(listener);
 	}
 	
+	public void addSaveGameListener(ActionListener listener) {
+		saveGame.addActionListener(listener);
+	}
+	
 	public void addDrawingMouseListener(MouseListener listener) {
 		drawing3D.addMouseListener(listener);
+	}
+	
+	public void addOpenGameListener(ActionListener listener) {
+		openGame.addActionListener(listener);
 	}
 	
 	public void addInventoryListener(ActionListener listener) {
@@ -277,10 +319,15 @@ class GameView extends JFrame implements GameListener {
         messageDisplayer.setCaretPosition(messageDisplayer.getDocument().getLength());		
 	}
 	
-	// update view when game changes	
-	public void commandProcessed(GameEvent e) {
+	public void repaint()
+	{		
 		this.drawing2D.repaint();
 		this.drawing3D.repaint();
+		
+	}
+	// update view when game changes	
+	public void commandProcessed(GameEvent e) {
+		this.repaint();
 		dspMessage(e.getGameStatus());
 	}
 	
@@ -302,12 +349,14 @@ class GameView extends JFrame implements GameListener {
 	
 	// returns frame with inventory
 	public InventoryFrame getInventoryView() {
+		roomItemView = new RoomItemFrame(this, game_model);
 		return inventoryView;
 	}
 	
 	
 	// returns frame with room items
 	public RoomItemFrame getRoomItemView() {
+		//inventoryView = new InventoryFrame(this, game_model);
 		return roomItemView;
 	}
 	
@@ -317,7 +366,7 @@ class GameView extends JFrame implements GameListener {
 		inventoryView = new InventoryFrame(this, game_model);
 		roomItemView = new RoomItemFrame(this, game_model);
 	}
-	
+	/*
 	// main method, sets up the game, controller, and view
 	public static void main(String[] args) {
 		GameSystem g = new GameSystem();
@@ -329,4 +378,21 @@ class GameView extends JFrame implements GameListener {
 		v.setVisible(true);
 		v.setLocationRelativeTo(null);
 	}
+	*/
+	public DrawingArea getDrawing2D() {
+		return drawing2D;
+	}
+
+	public void setDrawing2D(DrawingArea drawing2d) {
+		this.drawing2D = drawing2d;
+	}
+
+	public Drawing3DArea getDrawing3D() {
+		return drawing3D;
+	}
+
+	public void setDrawing3D(Drawing3DArea drawing3d) {
+		this.drawing3D = drawing3d;
+	}
+	
 }
