@@ -1,53 +1,42 @@
-<level number=1>
-	<room name="Outside" description="outside the main entrance of the university">
+<Game>
+<level number="1">
+	<room name="outside" description="outside the main entrance of the university">
 		<items>
-			<weapon name=""> </weapon>
+			<weapon name=""></weapon>
 			<consumable name=""></consumable>
 			<powerup name="" description="">
 				<attack></attack>
 				<health></health>
 			</powerup>
 		</items>
-		<exits>
-			<exit direction="east">Theater</exit>
-			<exit direction="south">Lab</exit>
-			<exit direction="west">Pub</exit>
-			<exit direction="teleporter">Office</exit>
-		</exits>
 		<monster name="">
 			<weapon name=""></weapon>
 		</monster>
 	</room>
 	
-	<room name="Theater" description="in a lecture theater">
+	<room name="theater" description="in a lecture theater">
 		<items>
-			<weapon name=""> </weapon>
+			<weapon name=""></weapon>
 			<consumable name=""></consumable>
 			<powerup name="mini_powerup" description="Attack Boost: 2, Health Boost: 5">
 				<attack>2</attack>
 				<health>5</health>
 			</powerup>
 		</items>
-		<exits>
-			<exit direction="west">outside</exit>
-		</exits>
-		<monster name="Vampire">
-			<weapon name="SuperSword">3</weapon>
+		<monster name="">
+			<weapon name=""></weapon>
 		</monster>
 	</room>
 	
 	<room name="pub" description="in the campus pub">
 		<items>
-			<weapon name="Sword"> 2</weapon>
+			<weapon name="Sword">20</weapon>
 			<consumable name=""></consumable>
 			<powerup name="" description="">
 				<attack></attack>
 				<health></health>
 			</powerup>
 		</items>
-		<exits>
-			<exit direction="east">outside</exit>
-		</exits>
 		<monster name="">
 			<weapon name=""></weapon>
 		</monster>
@@ -62,12 +51,8 @@
 				<health></health>
 			</powerup>
 		</items>
-		<exits>
-			<exit direction="north">outside</exit>
-			<exit direction="east">office</exit>
-		</exits>
 		<monster name="Vampire">
-			<weapon name="SuperSword">3</weapon>
+			<weapon name="SuperSword">1</weapon>
 		</monster>
 	</room>
 	
@@ -80,11 +65,225 @@
 				<health></health>
 			</powerup>
 		</items>
-		<exits>
-			<exit direction="west">lab</exit>
-		</exits>
-		<monster name="Vampire">
-			<weapon name="SuperSword">3</weapon>
+		<monster name="">
+			<weapon name=""></weapon>
 		</monster>
 	</room>	
+	
+	<exits>
+	    <location name="outside">
+			<exit direction="east">Theater</exit>
+			<exit direction="south">Lab</exit>
+			<exit direction="west">Pub</exit>
+			<exit direction="teleporter">Office</exit>
+		</location>
+	    <location name="theater">
+			<exit direction="west">outside</exit>
+		</location>
+		<location name="pub">
+	    	<exit direction="east">outside</exit>
+		</location>
+		<location name="lab">
+			<exit direction="north">outside</exit>
+			<exit direction="east">office</exit>
+		</location>
+		<location name="office">
+			<exit direction="west">lab</exit>
+		</location>
+	    
+	</exits>
+	
 </level>
+<level number="2">
+	<room name="outside" description="outside the main entrance of the university">
+		<items>
+			<weapon name="ShotGun">5</weapon>
+			<consumable name=""></consumable>
+			<powerup name="" description="">
+				<attack></attack>
+				<health></health>
+			</powerup>
+		</items>
+		<monster name="">
+			<weapon name=""></weapon>
+		</monster>
+	</room>
+	
+	<room name="theater" description="in a lecture theater">
+		<items>
+			<weapon name=""></weapon>
+			<consumable name=""></consumable>
+			<powerup name="mini_powerup" description="Attack Boost: 2, Health Boost: 5">
+				<attack>2</attack>
+				<health>5</health>
+			</powerup>
+		</items>
+		<monster name="">
+			<weapon name=""></weapon>
+		</monster>
+	</room>
+	
+	<room name="pub" description="in the campus pub">
+		<items>
+			<weapon name="Sword">20</weapon>
+			<consumable name=""></consumable>
+			<powerup name="" description="">
+				<attack></attack>
+				<health></health>
+			</powerup>
+		</items>
+		<monster name="dracula">
+			<weapon name="Blody Teeth">2</weapon>
+		</monster>
+	</room>
+	
+	<room name="lab" description="in a computing lab">
+		<items>
+			<weapon name=""></weapon>
+			<consumable name="SmallPotion">100</consumable>
+			<powerup name="" description="">
+				<attack></attack>
+				<health></health>
+			</powerup>
+		</items>
+		<monster name="Vampire">
+			<weapon name="SuperSword">1</weapon>
+		</monster>
+	</room>
+	
+	<room name="office" description="in the computing admin office">
+		<items>
+			<weapon name=""></weapon>
+			<consumable name=""></consumable>
+			<powerup name="" description="">
+				<attack></attack>
+				<health></health>
+			</powerup>
+		</items>
+		<monster name="">
+			<weapon name=""></weapon>
+		</monster>
+	</room>	
+	
+	<exits>
+	    <location name="outside">
+			<exit direction="east">Pub</exit>
+			<exit direction="south">Lab</exit>
+			<exit direction="west">Theater</exit>
+			<exit direction="teleporter">Office</exit>
+		</location>
+	    <location name="theater">
+			<exit direction="east">outside</exit>
+			<exit direction="teleporter">office</exit>
+		</location>
+		<location name="pub">
+	    	<exit direction="west">outside</exit>
+		</location>
+		<location name="lab">
+			<exit direction="north">outside</exit>
+			<exit direction="east">office</exit>
+		</location>
+		<location name="office">
+			<exit direction="west">lab</exit>
+		</location>
+	    
+	</exits>
+	
+</level>
+<level number="2">
+	<room name="outside" description="outside the main entrance of the university">
+		<items>
+			<weapon name="ShotGun">5</weapon>
+			<consumable name=""></consumable>
+			<powerup name="" description="">
+				<attack></attack>
+				<health></health>
+			</powerup>
+		</items>
+		<monster name="">
+			<weapon name=""></weapon>
+		</monster>
+	</room>
+	
+	<room name="theater" description="in a lecture theater">
+		<items>
+			<weapon name=""></weapon>
+			<consumable name=""></consumable>
+			<powerup name="mini_powerup" description="Attack Boost: 2, Health Boost: 5">
+				<attack>2</attack>
+				<health>5</health>
+			</powerup>
+		</items>
+		<monster name="">
+			<weapon name=""></weapon>
+		</monster>
+	</room>
+	
+	<room name="pub" description="in the campus pub">
+		<items>
+			<weapon name="Sword">20</weapon>
+			<consumable name=""></consumable>
+			<powerup name="" description="">
+				<attack></attack>
+				<health></health>
+			</powerup>
+		</items>
+		<monster name="dracula">
+			<weapon name="Blody Teeth">2</weapon>
+		</monster>
+	</room>
+	
+	<room name="lab" description="in a computing lab">
+		<items>
+			<weapon name=""></weapon>
+			<consumable name="SmallPotion">100</consumable>
+			<powerup name="" description="">
+				<attack></attack>
+				<health></health>
+			</powerup>
+		</items>
+		<monster name="Vampire">
+			<weapon name="SuperSword">1</weapon>
+		</monster>
+	</room>
+	
+	<room name="office" description="in the computing admin office">
+		<items>
+			<weapon name=""></weapon>
+			<consumable name=""></consumable>
+			<powerup name="" description="">
+				<attack></attack>
+				<health></health>
+			</powerup>
+		</items>
+		<monster name="">
+			<weapon name=""></weapon>
+		</monster>
+	</room>	
+	
+	<exits>
+	    <location name="outside">
+			<exit direction="east">Pub</exit>
+			<exit direction="south">Lab</exit>
+			<exit direction="west">Theater</exit>
+			<exit direction="teleporter">Office</exit>
+		</location>
+	    <location name="theater">
+			<exit direction="east">outside</exit>
+			<exit direction="teleporter">office</exit>
+		</location>
+		<location name="pub">
+	    	<exit direction="west">outside</exit>
+		</location>
+		<location name="lab">
+			<exit direction="north">outside</exit>
+			<exit direction="east">office</exit>
+		</location>
+		<location name="office">
+			<exit direction="west">lab</exit>
+		</location>
+	    
+	</exits>
+	
+</level>
+</Game>

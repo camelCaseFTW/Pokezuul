@@ -8,6 +8,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class GameSystem  implements  java.io.Serializable{
 	/**
 	 * 
@@ -49,6 +51,17 @@ public class GameSystem  implements  java.io.Serializable{
 		if (gameFinished()) gameStatus = Game.GAME_END;
 		else gameStatus = game.playGame(s);
 		announceGameStatus(new GameEvent(this));
+
+		if(gameStatus.contains("You have finished this level :), congradulation!!!"))
+		{
+			JOptionPane.showMessageDialog (null, "WOOW, You have grabed All the items and killed all the monsters. Press Ok to continue to the next level", "Title", JOptionPane.INFORMATION_MESSAGE);
+			Game.nextLevel();
+			Game newGame = new Game();
+			newGame.initializeGame();
+			game = newGame;
+			gameStatus = game.dspWelcome();
+			announceGameStatus(new GameEvent(this));
+		}
 		if (gameFinished()) announceGameEnded();
 	}
 	
@@ -139,9 +152,9 @@ public class GameSystem  implements  java.io.Serializable{
 		   gs.addGameListener(gv.getCommandListView());
 			
 		   gv.setVisible(true);
-		  gv.setLocationRelativeTo(null);
-		  gv.enableCommandPanel();
-		  gv.enableGameButtons();
+		   gv.setLocationRelativeTo(null);
+		   gv.enableCommandPanel();
+		   gv.enableGameButtons();
 		  
 			
 			

@@ -51,8 +51,6 @@ public class GameController{
 			String userInput = view.getUserInput();
 			if (userInput.length()>0) {
 				view.dspMessage(dspUserInput(userInput));
-				System.out.println("'''''''''''''''''''");
-				System.out.println(model.getGame().getPlayer().getRoom().getRoomName());
 				model.processCmd(userInput);
 				view.resetUserInput();
 			} else {

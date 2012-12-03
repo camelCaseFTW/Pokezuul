@@ -49,14 +49,10 @@ public class RoomItemFrame extends JFrame implements GameListener {
 	// when the model changes, this is called
 	@Override
 	public void commandProcessed(GameEvent e) {
-		System.out.println("in itemframe");
 		listModel.clear();
 		List<String> listContent = game.getGame().getPlayer().getRoom().getItemListString();
 		for (String s : listContent) 
-		{
-			System.out.println("in frame: "+ s);
 			listModel.addElement(s);
-		}
 	}
 
 	@Override

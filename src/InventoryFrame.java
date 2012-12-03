@@ -33,10 +33,8 @@ public class InventoryFrame extends JFrame implements GameListener, Serializable
 		listModel = new DefaultListModel<String>();
 		List<String> listContent = game.getGame().getPlayer().getItemListString();
 		for (String s : listContent) 
-		{
 			listModel.addElement(s);
-			System.out.println("item: " + s);
-		}
+
 		list = new JList<String>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setSelectedIndex(0);

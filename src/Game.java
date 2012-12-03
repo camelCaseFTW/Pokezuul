@@ -1,7 +1,17 @@
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -37,10 +47,13 @@ public class Game implements Serializable{
 	private static final long serialVersionUID = 1748238845495656824L;
 	public static final String GAME_END = "Game Over! 'Game > New Game' to start a new game.";
 	public static final String NEW_LINE = "\n";
+	public static int level = 1;
 	
 	private boolean gameOver;
     private Parser parser;
     private Player p1;
+	final ArrayList<Room> rooms = new ArrayList<Room>();
+	private Boolean isCorrentLevel = false;
     
     /**
      * Create the game and initialise its internal map.
@@ -53,37 +66,179 @@ public class Game implements Serializable{
 
     /**
      * Create all the rooms and link their exits together.
+     * @throws SAXException 
+     * @throws ParserConfigurationException 
+     * @throws IOException 
      */    
-    public void initializeGame() {
-        Room outside, theater, pub, lab, office;
+    public void initializeGame(){
         
-        // create the rooms
-        outside = new Room("outside the main entrance of the university", "Outside");
-        theater = new Room("in a lecture theater", "Theater");
-        theater.spawnMonster(new Monster("Vampire"));
-        theater.getMonster().insertItem(new Weapon("SuperSword", 3));
-        pub = new Room("in the campus pub", "Pub");
-        lab = new Room("in a computing lab", "Lab");
-        office = new Room("in the computing admin office", "Office");
-        
-        // initialise room exits
+    	File f = new File("Levels.xml");
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+		SAXParser s= null;
+		try {
+			s = spf.newSAXParser();
+		} catch (ParserConfigurationException | SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DefaultHandler dh = new DefaultHandler(){
+			
+		Room room;
+		Weapon weapon;
+		String element="";
+		Consumable consumable;
+		Powerup powerup;
+		Monster monster;
+		
+		public void startElement(String u, String ln, String qName, Attributes a)
+		{
+			if( qName.equalsIgnoreCase("level") && level == Integer.parseInt(a.getValue(0)))
+				isCorrentLevel = true;
+					
+			if(isCorrentLevel)
+			{
+				if( qName.equalsIgnoreCase("room"))
+					room = new Room(a.getValue(1), a.getValue(0));
+			
+				if( qName.equalsIgnoreCase("weapon"))
+				{
+					weapon = new Weapon(a.getValue(0), 0);
+					element = "weapon";
+				}
+				if( qName.equalsIgnoreCase("consumable"))
+				{
+					consumable = new Consumable(a.getValue(0), 0);
+					element = "consumable";
+				}
+				if( qName.equalsIgnoreCase("powerup"))
+				{
+					powerup = new Powerup(a.getValue(0), a.getValue(1), 0, 0);
+					element = "powerup";
+				}
+				if( qName.equalsIgnoreCase("attack"))
+					element = "attack";
+				if( qName.equalsIgnoreCase("health"))
+					element = "health";
+				if( qName.equalsIgnoreCase("monster"))
+				{
+					if(! a.getValue(0).trim().equalsIgnoreCase(""))
+					{
+						monster = new Monster(a.getValue(0));
+						element = "monster";
+						room.spawnMonster(monster);
+					}
+				}
+				if( qName.equalsIgnoreCase("weapon") && element.equalsIgnoreCase("monster"))
+				{
+					weapon = new Weapon(a.getValue(0), 0);
+					element="monster weapon";
+				}
+				
+				if( qName.equalsIgnoreCase("location"))
+				{
+					for(Room r: rooms)
+						if(r.getRoomName().equalsIgnoreCase(a.getValue(0)))
+							room = r;
 
-        outside.setExits(Exit.east, theater);
-        outside.setExits(Exit.south, lab);
-        outside.setExits(Exit.west, pub);
-        outside.setExits(Exit.teleporter, office);
-        theater.setExits(Exit.west, outside);
-        pub.setExits(Exit.east, outside);
-        lab.setExits(Exit.north, outside);
-        lab.setExits(Exit.east, office);
-        office.setExits(Exit.west, lab);
+				}
+				if( qName.equalsIgnoreCase("exit"))
+				{
+					if(a.getValue(0).equalsIgnoreCase("east"))
+						element = "exit.east";
+					else if(a.getValue(0).equalsIgnoreCase("west"))
+						element = "exit.west";
+					else if(a.getValue(0).equalsIgnoreCase("north"))
+						element = "exit.north";
+					else if(a.getValue(0).equalsIgnoreCase("teleporter"))
+						element = "exit.teleporter";
+					else
+						element = "exit.south";				
+				}	
+			}
+		}
+		public void endElement(String uri, String localName, String qName){
+		
+		if(qName.equalsIgnoreCase("room") && isCorrentLevel )
+			rooms.add(room);
+		else if(qName.equalsIgnoreCase("level"))
+			isCorrentLevel = false;
+		}
+		public void characters(char[] ch,int start, int length)
+		{
+			if(! new String(ch, start, length).trim().equalsIgnoreCase("") && isCorrentLevel)
+			{
+				if(element.equalsIgnoreCase("weapon"))
+				{
+					weapon.setWeaponAtk(Integer.parseInt(new String(ch, start, length)));
+					room.insertItem(weapon);
+				}
+				if(element.equalsIgnoreCase("consumable"))
+				{
+					consumable.setRegenHP(Integer.parseInt(new String(ch, start, length)));
+					room.insertItem(consumable);	
+				}
+				if(element.equalsIgnoreCase("attack"))
+				{
+					powerup.setIncreaseAttack(Integer.parseInt(new String(ch, start, length)));
+				}
+				if(element.equalsIgnoreCase("consumable"))
+				{
+					powerup.setIncreaseHP(Integer.parseInt(new String(ch, start, length)));
+					room.insertItem(powerup);	
+				}
+				if(element.equalsIgnoreCase("monster weapon"))
+				{
+					weapon.setWeaponAtk(Integer.parseInt(new String(ch, start, length)));
+					room.getMonster().insertItem(weapon);
+				}
+				
+				////EXITS
+				if(element.equalsIgnoreCase("exit.east"))
+				{
+					for(Room r: rooms)
+						if(r.getRoomName().equalsIgnoreCase(new String(ch, start, length)))
+							room.setExits(Exit.east, r);
+				}
+				if(element.equalsIgnoreCase("exit.west"))
+				{
+					for(Room r: rooms)
+						if(r.getRoomName().equalsIgnoreCase(new String(ch, start, length)))
+							room.setExits(Exit.west, r);
+				}				
+				if(element.equalsIgnoreCase("exit.north"))
+				{
+					for(Room r: rooms)
+						if(r.getRoomName().equalsIgnoreCase(new String(ch, start, length)))
+							room.setExits(Exit.north, r);
+				}				
+				if(element.equalsIgnoreCase("exit.south"))
+				{
+					for(Room r: rooms)
+						if(r.getRoomName().equalsIgnoreCase(new String(ch, start, length)))
+							room.setExits(Exit.south, r);
+				}
+				if(element.equalsIgnoreCase("exit.teleporter"))
+				{
+					for(Room r: rooms)
+						if(r.getRoomName().equalsIgnoreCase(new String(ch, start, length)))
+							room.setExits(Exit.teleporter, r);
+				}
+				
+			}
+				
+		}
+		};
+		try {
+			s.parse(f, dh);
+		} catch (SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   	
+    	
+		for(Room r: rooms)
+			if(r.getRoomName().equalsIgnoreCase("outside"))
+				p1.setRoom(r);
 
-        //outside.insertItem(new Item("GoldenKey"));
-        pub.insertItem(new Weapon("Sword", 2));
-        lab.insertItem(new Consumable("SmallPotion", 100));
-        theater.insertItem(new Powerup("mini_powerup", "Attack Boost: 2, Health Boost: 5", 2, 5));
-        
-        p1.setRoom(outside); 
         gameOver = false;
     }
 
@@ -106,6 +261,21 @@ public class Game implements Serializable{
 			gameStatus += "You have died :(\n" + GAME_END;
 			gameOver = true;
 		}
+		Boolean flag = true;
+		for(Room room: rooms)
+		{
+			if(((! room.getAllItems().trim().equalsIgnoreCase("-Empty-") ) && ! room.getAllItems().trim().equalsIgnoreCase(""))
+				|| room.getMonster() != null)
+			{
+				flag = false;
+				break;
+			}
+		}
+		if(flag== true)
+		{
+			gameStatus += "You have finished this level :), congradulation!!! \n";
+		}
+
     	return gameStatus;
     }
     
@@ -189,6 +359,10 @@ public class Game implements Serializable{
 		
 	}
     
+	public static void nextLevel()
+	{
+		level++;
+	}
   
 	 
 }

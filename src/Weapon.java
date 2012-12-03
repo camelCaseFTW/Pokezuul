@@ -17,4 +17,7 @@ public class Weapon extends Item{
     public int getWeaponAtk() {
         return attackPower;
     }
+    public void setWeaponAtk(int atk) {
+        attackPower = atk;
+    }
 }

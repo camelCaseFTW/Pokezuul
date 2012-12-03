@@ -333,7 +333,6 @@ public class Player extends Creature implements Serializable{
     
     public String playerLook() {
     	String s = "";
-    	
     	s += "You are " + currentRoom.getDescription() + "\n"
     			+ "Items:\n";
         s+= currentRoom.getAllItems() + "\n";

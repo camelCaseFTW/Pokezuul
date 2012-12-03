@@ -8,7 +8,11 @@
 public class Consumable extends Item{
     protected int regenHP;
 
-    public Consumable(String name, int recoverHP) {
+	public void setRegenHP(int regenHP) {
+		this.regenHP = regenHP;
+	}
+
+	public Consumable(String name, int recoverHP) {
         super(name);
         regenHP = recoverHP;
     }
